@@ -34,7 +34,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:src="@android:drawable/ic_menu_compass"
-                    app:tint="@color/on_primary_container"/>
+                    app:tint="@color/white"/>
             </FrameLayout>
         </LinearLayout>
         
