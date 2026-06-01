@@ -44,12 +44,13 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <!-- Food Information Card -->
+            <!-- Using translationY instead of negative margin to avoid preview crashes -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardFoodInfo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="-48dp"
+                android:translationY="-48dp"
                 app:cardBackgroundColor="@color/surface_container_lowest"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
@@ -90,7 +91,7 @@
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal">
 
-                                <ImageView
+                                <androidx.appcompat.widget.AppCompatImageView
                                     android:layout_width="18dp"
                                     android:layout_height="18dp"
                                     android:src="@drawable/ic_payments"
@@ -118,7 +119,7 @@
                             android:paddingHorizontal="16dp"
                             android:paddingVertical="4dp">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="16dp"
                                 android:layout_height="16dp"
                                 android:src="@drawable/ic_star"
@@ -144,7 +145,7 @@
                         android:textColor="@color/secondary"
                         android:textSize="14sp" />
 
-                    <!-- Tags (using LinearLayout to avoid Flexbox dependency issue, or use Flow in ConstraintLayout) -->
+                    <!-- Tags -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -153,6 +154,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:flow_wrapMode="chain"
@@ -210,12 +212,13 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Action Buttons Grid -->
+            <!-- Offset margin due to translationY on cardFoodInfo -->
             <LinearLayout
                 android:id="@+id/llActions"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="-24dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -230,7 +233,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_bookmark"
@@ -258,7 +261,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_near_me"
@@ -286,7 +289,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_menu_book"
@@ -386,7 +389,7 @@
                                     android:paddingHorizontal="8dp"
                                     android:paddingVertical="4dp">
 
-                                    <ImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:layout_width="12dp"
                                         android:layout_height="12dp"
                                         android:src="@drawable/ic_star"
@@ -426,7 +429,7 @@
                                     android:gravity="center_vertical"
                                     android:orientation="horizontal">
 
-                                    <ImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:layout_width="14dp"
                                         android:layout_height="14dp"
                                         android:src="@drawable/ic_location_on"
@@ -481,7 +484,7 @@
                                     android:paddingHorizontal="8dp"
                                     android:paddingVertical="4dp">
 
-                                    <ImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:layout_width="12dp"
                                         android:layout_height="12dp"
                                         android:src="@drawable/ic_star"
@@ -521,7 +524,7 @@
                                     android:gravity="center_vertical"
                                     android:orientation="horizontal">
 
-                                    <ImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:layout_width="14dp"
                                         android:layout_height="14dp"
                                         android:src="@drawable/ic_location_on"
@@ -576,7 +579,7 @@
                                     android:paddingHorizontal="8dp"
                                     android:paddingVertical="4dp">
 
-                                    <ImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:layout_width="12dp"
                                         android:layout_height="12dp"
                                         android:src="@drawable/ic_star"
@@ -616,7 +619,7 @@
                                     android:gravity="center_vertical"
                                     android:orientation="horizontal">
 
-                                    <ImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:layout_width="14dp"
                                         android:layout_height="14dp"
                                         android:src="@drawable/ic_location_on"
@@ -650,7 +653,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnBack"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -673,7 +676,7 @@
             app:layout_constraintStart_toEndOf="@id/btnBack"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnFavorite"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -684,7 +687,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/on_surface" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnShare"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -710,7 +713,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_marginEnd="16dp"
@@ -723,7 +726,7 @@
             android:textStyle="bold"
             app:cornerRadius="12dp" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:background="@drawable/bg_icon_btn_secondary"
