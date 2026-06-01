@@ -2,4 +2,20 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Login Screen Colors -->
+    <color name="primary_container">#ff6b35</color>
+    <color name="background_color">#fbf9f8</color>
+    <color name="on_surface">#1b1c1c</color>
+    <color name="secondary_color">#625e58</color>
+    <color name="surface_container_lowest">#ffffff</color>
+    <color name="on_surface_variant">#594139</color>
+    <color name="outline_color">#8d7168</color>
+    <color name="surface_container_low">#f5f3f3</color>
+    <color name="outline_variant">#e1bfb5</color>
+    <color name="on_primary">#ffffff</color>
+    <color name="on_primary_fixed_variant">#832600</color>
+    <color name="primary_color">#ab3500</color>
+    <color name="primary_fixed">#ffdbd0</color>
+    <color name="secondary_fixed">#e9e1da</color>
 </resources>
