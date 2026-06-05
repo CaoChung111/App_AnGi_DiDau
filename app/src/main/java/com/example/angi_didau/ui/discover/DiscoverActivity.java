@@ -18,6 +18,7 @@ import com.example.angi_didau.R;
 import com.example.angi_didau.ui.home.HomeActivity;
 import com.example.angi_didau.ui.profile.ProfileActivity;
 import com.example.angi_didau.ui.random.RandomActivity;
+import com.example.angi_didau.ui.favorites.FavoritesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,14 @@ public class DiscoverActivity extends AppCompatActivity {
         Button btnRegenerate = findViewById(R.id.btnRegenerate);
         if (btnRegenerate != null) {
             btnRegenerate.setOnClickListener(v -> {
+                llResult.setVisibility(View.GONE);
+                llForm.setVisibility(View.VISIBLE);
+            });
+        }
+        
+        Button btnEditPlan = findViewById(R.id.btnEditPlan);
+        if (btnEditPlan != null) {
+            btnEditPlan.setOnClickListener(v -> {
                 llResult.setVisibility(View.GONE);
                 llForm.setVisibility(View.VISIBLE);
             });
@@ -152,6 +161,12 @@ public class DiscoverActivity extends AppCompatActivity {
         
         findViewById(R.id.navRandom).setOnClickListener(v -> {
             startActivity(new Intent(this, RandomActivity.class));
+            finish();
+            overridePendingTransition(0, 0);
+        });
+        
+        findViewById(R.id.navFavorites).setOnClickListener(v -> {
+            startActivity(new Intent(this, FavoritesActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });

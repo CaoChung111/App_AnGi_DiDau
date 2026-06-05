@@ -491,6 +491,61 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+                <!-- Action Buttons: Sửa, Lưu, Đổi ngày -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:weightSum="3">
+                    
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEditPlan"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:text="Sửa"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/primary_container"
+                        app:icon="@android:drawable/ic_menu_edit"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/white"
+                        app:cornerRadius="8dp"
+                        android:paddingHorizontal="0dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="6dp"
+                        android:text="Lưu"
+                        android:textAllCaps="false"
+                        android:textColor="@color/on_surface"
+                        android:backgroundTint="@color/surface_container_low"
+                        app:icon="@android:drawable/ic_menu_save"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/on_surface"
+                        app:cornerRadius="8dp"
+                        android:paddingHorizontal="0dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:text="Đổi ngày"
+                        android:textAllCaps="false"
+                        android:textColor="@color/on_surface"
+                        android:backgroundTint="@color/surface_container_low"
+                        app:icon="@android:drawable/ic_menu_today"
+                        app:iconGravity="textStart"
+                        app:iconTint="@color/on_surface"
+                        app:cornerRadius="8dp"
+                        android:paddingHorizontal="0dp"/>
+                </LinearLayout>
+
                 <!-- Timeline Recycler View -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvTimeline"
@@ -558,7 +613,7 @@
                                 android:layout_height="48dp"
                                 android:layout_weight="1"
                                 android:layout_marginEnd="8dp"
-                                android:text="Regenerate"
+                                android:text="Tạo lại"
                                 android:textAllCaps="false"
                                 android:textColor="@color/on_surface"
                                 android:backgroundTint="@color/surface_container_high"
@@ -569,7 +624,7 @@
                                 android:layout_height="48dp"
                                 android:layout_weight="1"
                                 android:layout_marginStart="8dp"
-                                android:text="Save Plan"
+                                android:text="Lưu kế hoạch"
                                 android:textAllCaps="false"
                                 android:backgroundTint="@color/primary_container"
                                 app:cornerRadius="8dp"/>
@@ -579,7 +634,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="48dp"
                             android:layout_marginTop="12dp"
-                            android:text="Share"
+                            android:text="Chia sẻ"
                             android:textAllCaps="false"
                             android:textColor="@color/on_surface"
                             android:backgroundTint="@color/transparent"

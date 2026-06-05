@@ -13,8 +13,10 @@ import com.example.angi_didau.adapter.TrendingFoodAdapter;
 import com.example.angi_didau.ui.random.RandomActivity;
 import com.example.angi_didau.ui.profile.ProfileActivity;
 import com.example.angi_didau.ui.discover.DiscoverActivity;
+import com.example.angi_didau.ui.favorites.FavoritesActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.View;
 
 /**
  * Home screen — the main entry point after successful authentication.
@@ -37,8 +39,25 @@ public class HomeActivity extends AppCompatActivity {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         setupBottomNav();
+        setupBanners();
         setupRecyclerViews();
         observeViewModel();
+    }
+
+    private void setupBanners() {
+        View cardFood = findViewById(R.id.cardFood);
+        if (cardFood != null) {
+            cardFood.setOnClickListener(v -> {
+                startActivity(new Intent(this, com.example.angi_didau.ui.food.FoodListActivity.class));
+            });
+        }
+        
+        View cardLocation = findViewById(R.id.cardLocation);
+        if (cardLocation != null) {
+            cardLocation.setOnClickListener(v -> {
+                startActivity(new Intent(this, com.example.angi_didau.ui.location.LocationListActivity.class));
+            });
+        }
     }
 
     private void setupRecyclerViews() {
@@ -76,6 +95,13 @@ public class HomeActivity extends AppCompatActivity {
             finish();
             overridePendingTransition(0, 0);
         });
+        
+        // Favorites Click
+        findViewById(R.id.navFavorites).setOnClickListener(v -> {
+            startActivity(new Intent(this, FavoritesActivity.class));
+            finish();
+            overridePendingTransition(0, 0);
+        });
 
         // Profile Click
         findViewById(R.id.navProfile).setOnClickListener(v -> {
@@ -91,14 +117,28 @@ public class HomeActivity extends AppCompatActivity {
      */
     private void observeViewModel() {
         homeViewModel.getTrendingFoods().observe(this, foods -> {
-            if (foods != null) {
+            if (foods != null && !foods.isEmpty()) {
                 trendingFoodAdapter.submitList(foods);
+            } else {
+                // Mock data for UI presentation
+                java.util.List<com.example.angi_didau.data.model.Food> dummyFoods = java.util.Arrays.asList(
+                    new com.example.angi_didau.data.model.Food("1", "Waffle Chocolate Dâu Tây", "Thơm ngon", 60000, "", 4.8f),
+                    new com.example.angi_didau.data.model.Food("2", "Bảo tàng Mỹ thuật", "Khám phá", 30000, "", 4.5f)
+                );
+                trendingFoodAdapter.submitList(dummyFoods);
             }
         });
 
         homeViewModel.getRecommendedLocations().observe(this, locations -> {
-            if (locations != null) {
+            if (locations != null && !locations.isEmpty()) {
                 recommendedLocationAdapter.submitList(locations);
+            } else {
+                // Mock data for UI presentation
+                java.util.List<com.example.angi_didau.data.model.Location> dummyLocations = java.util.Arrays.asList(
+                    new com.example.angi_didau.data.model.Location("1", "Phở Cuốn Hương Mai", "Đặc sản Hà Nội - Ẩm thực", "", 0, 0, 4.9f),
+                    new com.example.angi_didau.data.model.Location("2", "Nhà Hàng Ngon", "Không gian sân vườn - Quận 3", "", 0, 0, 4.8f)
+                );
+                recommendedLocationAdapter.submitList(dummyLocations);
             }
         });
     }

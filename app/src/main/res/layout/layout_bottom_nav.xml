@@ -12,9 +12,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="68dp"
+        android:layout_height="76dp"
         android:orientation="horizontal"
         android:gravity="center"
+        android:paddingTop="8dp"
         android:weightSum="5">
 
         <!-- Tab 1: Home -->
@@ -43,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Home"
+                android:text="Trang chủ"
                 android:textColor="@color/primary_container"
                 android:textSize="10sp"
                 android:textStyle="bold"/>
@@ -76,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Discover"
+                android:text="AI Gợi ý"
                 android:textColor="@color/secondary"
                 android:textSize="10sp"/>
 
@@ -115,7 +116,7 @@
                 android:id="@+id/tvNavRandom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Random"
+                android:text="Quay số"
                 android:textColor="@color/primary_container"
                 android:textSize="10sp"
                 android:textStyle="bold"/>
@@ -148,7 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Favorites"
+                android:text="Yêu thích"
                 android:textColor="@color/secondary"
                 android:textSize="10sp"/>
 
@@ -180,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Profile"
+                android:text="Cá nhân"
                 android:textColor="@color/secondary"
                 android:textSize="10sp"/>
 

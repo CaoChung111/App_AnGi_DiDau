@@ -15,6 +15,7 @@ import com.example.angi_didau.R;
 import com.example.angi_didau.ui.home.HomeActivity;
 import com.example.angi_didau.ui.profile.ProfileActivity;
 import com.example.angi_didau.ui.discover.DiscoverActivity;
+import com.example.angi_didau.ui.favorites.FavoritesActivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -79,6 +80,13 @@ public class RandomActivity extends AppCompatActivity {
         // Discover Click
         findViewById(R.id.navDiscover).setOnClickListener(v -> {
             startActivity(new Intent(this, DiscoverActivity.class));
+            finish();
+            overridePendingTransition(0, 0);
+        });
+        
+        // Favorites Click
+        findViewById(R.id.navFavorites).setOnClickListener(v -> {
+            startActivity(new Intent(this, FavoritesActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });

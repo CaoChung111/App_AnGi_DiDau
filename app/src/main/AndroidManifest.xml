@@ -95,6 +95,13 @@
             android:name=".ui.discover.DiscoverActivity"
             android:exported="false" />
 
+        <!-- ──────────────────────────── -->
+        <!--  Favorites Feature         -->
+        <!-- ──────────────────────────── -->
+        <activity
+            android:name=".ui.favorites.FavoritesActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
