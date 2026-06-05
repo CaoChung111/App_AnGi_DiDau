@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp">
+
+    <!-- Timeline Line -->
+    <View
+        android:id="@+id/vLine"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="#FFDBD0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/ivIconContainer"
+        app:layout_constraintEnd_toEndOf="@id/ivIconContainer"/>
+
+    <!-- Timeline Icon Container (Circle with border) -->
+    <FrameLayout
+        android:id="@+id/ivIconContainer"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_circle_outline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/ivTypeIcon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:src="@android:drawable/ic_menu_camera"
+            app:tint="@color/primary_container"/>
+    </FrameLayout>
+
+    <!-- Header Text (Time - Category) -->
+    <TextView
+        android:id="@+id/tvTimeCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="18:00 — CAFE"
+        android:textColor="@color/primary"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/ivIconContainer"
+        app:layout_constraintTop_toTopOf="@id/ivIconContainer"
+        app:layout_constraintBottom_toBottomOf="@id/ivIconContainer"/>
+
+    <!-- Main Card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/surface_container_lowest"
+        app:layout_constraintStart_toEndOf="@id/ivIconContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTimeCategory">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivImage"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/sym_def_app_icon"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@drawable/bg_outline">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="top">
+                    
+                    <TextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="The Workshop Coffee"
+                        android:textColor="@color/on_surface"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_marginEnd="8dp"/>
+                        
+                    <TextView
+                        android:id="@+id/tvPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="60.000đ"
+                        android:background="@drawable/bg_chip"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp"
+                        android:textColor="@color/secondary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Không gian yên tĩnh, view ban công cực chill cho cặp đôi."
+                    android:textColor="@color/secondary"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="12dp">
+                    
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@android:drawable/ic_dialog_map"
+                        app:tint="@color/primary_container"/>
+                        
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Quận 1, TP. HCM"
+                        android:textColor="@color/primary_container"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:layout_marginStart="4dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    tools:context=".activities.auth.RegisterActivity">
+    android:background="@color/background"
+    tools:context=".ui.auth.RegisterActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -131,6 +131,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -145,7 +146,7 @@
                         app:startIconTint="@color/outline_color">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etEmailRegister"
+                            android:id="@+id/etEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="email@example.com"
@@ -203,6 +204,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -219,7 +221,7 @@
                         app:startIconTint="@color/outline_color">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etPasswordRegister"
+                            android:id="@+id/etPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="••••••••"

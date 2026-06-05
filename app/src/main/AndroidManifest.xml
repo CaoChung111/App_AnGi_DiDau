@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Network access for Firebase and future API calls -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".AnGiDiDauApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,22 +15,86 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AnGi_DiDau">
 
-        <!-- Đặt LoginActivity làm màn hình khởi chạy đầu tiên -->
-        <activity
-            android:name=".activities.auth.LoginActivity"
-            android:exported="true">
+        <!-- ──────────────────────────── -->
+        <!--  Auth Flow                  -->
+        <!-- ──────────────────────────── -->
 
+        <!-- Entry point: Login screen is the first screen shown -->
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
-        <activity android:name=".activities.auth.RegisterActivity" />
+        <activity
+            android:name=".ui.auth.RegisterActivity"
+            android:exported="false" />
 
-        <activity android:name=".activities.location.LocationDetailActivity" />
-        
+        <!-- ──────────────────────────── -->
+        <!--  Main App Flow             -->
+        <!-- ──────────────────────────── -->
+
+        <!-- Home screen — shown after successful login -->
+<!--        <activity-->
+<!--            android:name=".ui.home.HomeActivity"-->
+<!--            android:exported="false" />-->
+
+        <!-- ──────────────────────────── -->
+        <!--  Location Feature          -->
+        <!-- ──────────────────────────── -->
+
+        <activity
+            android:name=".ui.location.LocationDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.location.LocationListActivity"
+            android:exported="false" />
+
+        <!-- ──────────────────────────── -->
+        <!--  Food Feature              -->
+        <!-- ──────────────────────────── -->
+
+        <activity
+            android:name=".ui.food.FoodDetailActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.food.FoodListActivity"
+            android:exported="false" />
+
+        <!-- ──────────────────────────── -->
+        <!--  Search Feature            -->
+        <!-- ──────────────────────────── -->
+
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:exported="false" />
+
+        <!-- ──────────────────────────── -->
+        <!--  Random Feature            -->
+        <!-- ──────────────────────────── -->
+        <activity
+            android:name=".ui.random.RandomActivity"
+            android:exported="false" />
+
+        <!-- ──────────────────────────── -->
+        <!--  Profile Feature           -->
+        <!-- ──────────────────────────── -->
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false" />
+
+        <!-- ──────────────────────────── -->
+        <!--  Discover Feature          -->
+        <!-- ──────────────────────────── -->
+        <activity
+            android:name=".ui.discover.DiscoverActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

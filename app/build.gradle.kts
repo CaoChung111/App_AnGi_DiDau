@@ -22,14 +22,21 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
             isMinifyEnabled = false
+            isDebuggable = true
+        }
+        release {
+            // Enable minification + obfuscation for production builds
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -37,15 +44,27 @@ android {
 }
 
 dependencies {
+    // ── Core AndroidX ─────────────────────────────
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
+    // ── MVVM — ViewModel + LiveData ───────────────
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.livedata)
+
+    // ── Firebase ──────────────────────────────────
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+
+    // ── Image Loading ─────────────────────────────
+    implementation(libs.glide)
+    implementation(libs.circleimageview)
+
+    // ── Testing ───────────────────────────────────
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.firestore)
-    implementation(libs.glide)
-    implementation(libs.circleimageview)
 }

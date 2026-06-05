@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    tools:context=".activities.auth.LoginActivity">
+    android:background="@color/background"
+    tools:context=".ui.auth.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Chào mừng bạn quay trở lại!"
-                android:textColor="@color/secondary_color"
+                android:textColor="@color/secondary"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,6 +101,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:boxBackgroundColor="@color/surface_container_low"
@@ -138,6 +139,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:boxBackgroundColor="@color/surface_container_low"
@@ -178,7 +180,7 @@
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/primary_container"
                             android:text="Ghi nhớ"
-                            android:textColor="@color/secondary_color"
+                            android:textColor="@color/secondary"
                             android:textSize="12sp" />
 
                         <View
@@ -190,7 +192,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Quên mật khẩu?"
-                            android:textColor="@color/primary_color"
+                            android:textColor="@color/primary"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -273,7 +275,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
                 android:text="Chưa có tài khoản? Đăng ký ngay"
-                android:textColor="@color/secondary_color"
+                android:textColor="@color/secondary"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
