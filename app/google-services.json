@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1077828054884",
+    "project_id": "app-angi-didau-36669",
+    "storage_bucket": "app-angi-didau-36669.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077828054884:android:98b7367eb1caba1550d471",
+        "android_client_info": {
+          "package_name": "com.example.angi_didau"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA771RCXAODhK-50VQ-7nIMPkOY8ECHnl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
