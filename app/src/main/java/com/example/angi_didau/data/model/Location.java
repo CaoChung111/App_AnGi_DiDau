@@ -11,7 +11,8 @@ public class Location {
     private String id;
     private String name;
     private String address;
-    private String imageUrl;
+    private String imageUrl; // Primary thumbnail
+    private java.util.List<String> imageUrls; // Gallery images
     private double latitude;
     private double longitude;
     private float averageRating;
@@ -19,12 +20,13 @@ public class Location {
     /** Required no-arg constructor for Firestore deserialization. */
     public Location() {}
 
-    public Location(String id, String name, String address, String imageUrl,
+    public Location(String id, String name, String address, String imageUrl, java.util.List<String> imageUrls,
                     double latitude, double longitude, float averageRating) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.imageUrl = imageUrl;
+        this.imageUrls = imageUrls;
         this.latitude = latitude;
         this.longitude = longitude;
         this.averageRating = averageRating;
@@ -41,6 +43,9 @@ public class Location {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public java.util.List<String> getImageUrls() { return imageUrls; }
+    public void setImageUrls(java.util.List<String> imageUrls) { this.imageUrls = imageUrls; }
 
     public double getLatitude() { return latitude; }
     public void setLatitude(double latitude) { this.latitude = latitude; }

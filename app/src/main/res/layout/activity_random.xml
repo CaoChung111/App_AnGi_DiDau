@@ -33,18 +33,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <!-- Notification Bell -->
-            <ImageView
-                android:id="@+id/ivNotificationRandom"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_dialog_info"
-                android:contentDescription="Thông báo"
-                app:tint="@color/on_surface"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -244,6 +233,21 @@
                 android:text="Nhấn nút bên dưới để bắt đầu xoay!"
                 android:textColor="@color/secondary"
                 android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/btnViewDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_tab_unselected"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="Xem chi tiết"
+                android:textColor="@color/primary_container"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <!-- Spin Now Button -->
             <Button

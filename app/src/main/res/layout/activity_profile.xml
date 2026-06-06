@@ -33,19 +33,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <!-- Notification Bell -->
-            <ImageView
-                android:id="@+id/ivNotificationProfile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_dialog_info"
-                android:contentDescription="Thông báo"
-                app:tint="@color/on_surface"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -76,7 +63,7 @@
                     android:id="@+id/civProfileAvatar"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:src="@android:drawable/sym_def_app_icon"
+                    android:src="@drawable/ic_person"
                     app:civ_border_width="3dp"
                     app:civ_border_color="@color/primary_container"/>
 
@@ -86,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="Minh Nguyễn"
+                    android:text="Người dùng"
                     android:textColor="@color/on_surface"
                     android:textSize="22sp"
                     android:textStyle="bold"/>
@@ -122,6 +109,7 @@
                     android:gravity="center">
                     
                     <TextView
+                        android:id="@+id/tvStatPlaces"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="42"
@@ -153,6 +141,7 @@
                     android:gravity="center">
                     
                     <TextView
+                        android:id="@+id/tvStatFoods"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="128"
@@ -184,6 +173,7 @@
                     android:gravity="center">
                     
                     <TextView
+                        android:id="@+id/tvStatSaved"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="15"
@@ -210,6 +200,7 @@
 
                 <!-- Favorites -->
                 <LinearLayout
+                    android:id="@+id/llFavorites"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:orientation="horizontal"
@@ -250,6 +241,7 @@
 
                 <!-- Reviews -->
                 <LinearLayout
+                    android:id="@+id/llReviews"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:orientation="horizontal"
@@ -269,7 +261,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Đánh giá"
+                        android:text="Đánh giá của tôi"
                         android:textColor="@color/on_surface"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp"/>
@@ -290,6 +282,7 @@
 
                 <!-- Saved plans -->
                 <LinearLayout
+                    android:id="@+id/llSavedPlans"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:orientation="horizontal"
@@ -328,48 +321,9 @@
                     android:layout_marginHorizontal="20dp"
                     android:background="@color/surface_container_high"/>
 
-                <!-- Settings -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="20dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackground">
-                    
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_settings"
-                        app:tint="@color/on_surface"/>
-                        
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Cài đặt"
-                        android:textColor="@color/on_surface"
-                        android:textSize="16sp"
-                        android:layout_marginStart="16dp"/>
-                        
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_chevron_right"
-                        app:tint="@color/secondary"/>
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:background="@color/surface_container_high"/>
-
                 <!-- Logout -->
                 <LinearLayout
+                    android:id="@+id/btnLogout"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:orientation="horizontal"

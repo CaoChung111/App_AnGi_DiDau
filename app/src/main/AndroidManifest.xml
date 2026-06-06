@@ -21,7 +21,7 @@
 
         <!-- Entry point: Login screen is the first screen shown -->
         <activity
-            android:name=".ui.home.HomeActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,9 +38,9 @@
         <!-- ──────────────────────────── -->
 
         <!-- Home screen — shown after successful login -->
-<!--        <activity-->
-<!--            android:name=".ui.home.HomeActivity"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".ui.home.HomeActivity"
+            android:exported="false" />
 
         <!-- ──────────────────────────── -->
         <!--  Location Feature          -->
@@ -86,6 +86,12 @@
         <!-- ──────────────────────────── -->
         <activity
             android:name=".ui.profile.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.UserReviewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.SavedPlansActivity"
             android:exported="false" />
 
         <!-- ──────────────────────────── -->

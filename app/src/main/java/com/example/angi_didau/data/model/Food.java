@@ -10,19 +10,21 @@ public class Food {
     private String name;
     private String description;
     private double price;
-    private String imageUrl;
+    private String imageUrl; // Primary thumbnail
+    private java.util.List<String> imageUrls; // Gallery images
     private float averageRating;
 
     /** Required no-arg constructor for Firestore deserialization. */
     public Food() {}
 
     public Food(String id, String name, String description, double price,
-                String imageUrl, float averageRating) {
+                String imageUrl, java.util.List<String> imageUrls, float averageRating) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
+        this.imageUrls = imageUrls;
         this.averageRating = averageRating;
     }
 
@@ -40,6 +42,9 @@ public class Food {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public java.util.List<String> getImageUrls() { return imageUrls; }
+    public void setImageUrls(java.util.List<String> imageUrls) { this.imageUrls = imageUrls; }
 
     public float getAverageRating() { return averageRating; }
     public void setAverageRating(float averageRating) { this.averageRating = averageRating; }

@@ -10,13 +10,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.angi_didau.R;
 import com.example.angi_didau.adapter.RecommendedLocationAdapter;
 import com.example.angi_didau.adapter.TrendingFoodAdapter;
-import com.example.angi_didau.ui.random.RandomActivity;
-import com.example.angi_didau.ui.profile.ProfileActivity;
+import com.example.angi_didau.common.constant.AppConstants;
+import com.example.angi_didau.common.util.SessionManager;
+import com.example.angi_didau.data.model.Food;
+import com.example.angi_didau.data.model.Location;
+import com.example.angi_didau.ui.auth.LoginActivity;
 import com.example.angi_didau.ui.discover.DiscoverActivity;
 import com.example.angi_didau.ui.favorites.FavoritesActivity;
+import com.example.angi_didau.ui.food.FoodDetailActivity;
+import com.example.angi_didau.ui.food.FoodListActivity;
+import com.example.angi_didau.ui.location.LocationDetailActivity;
+import com.example.angi_didau.ui.location.LocationListActivity;
+import com.example.angi_didau.ui.profile.ProfileActivity;
+import com.example.angi_didau.ui.random.RandomActivity;
+import com.example.angi_didau.ui.search.SearchActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
+
+import java.util.Arrays;
 
 /**
  * Home screen — the main entry point after successful authentication.
@@ -24,39 +36,83 @@ import android.view.View;
  * This Activity is intentionally thin: it only handles view binding and
  * observing LiveData from {@link HomeViewModel}. All data-fetching and
  * business logic lives in the ViewModel and Repository layers.
+ * <p>
+ * Auth guard: Redirects to {@link LoginActivity} if the user is not logged in
+ * (checked via Firebase Auth, not just SessionManager — Firebase is the source of truth).
  */
 public class HomeActivity extends AppCompatActivity {
 
     private HomeViewModel homeViewModel;
     private TrendingFoodAdapter trendingFoodAdapter;
     private RecommendedLocationAdapter recommendedLocationAdapter;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        sessionManager = new SessionManager(this);
+
+        // ── Auth Guard ────────────────────────────────────────────
+        // Always check Firebase Auth state, not just SessionManager.
+        // Handles cases where Firebase token has expired or user was deleted.
+        com.google.firebase.auth.FirebaseUser firebaseUser =
+                com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) {
+            navigateToLogin();
+            return;
+        }
+
+        TextView tvUserName = findViewById(R.id.tvUserName);
+        if (tvUserName != null) {
+            String userName = sessionManager.getUserName();
+            if (userName == null || userName.isEmpty()) {
+                userName = firebaseUser.getEmail() != null ? firebaseUser.getEmail().split("@")[0] : "Người dùng";
+            }
+            tvUserName.setText(userName + " 👋");
+        }
+        // ─────────────────────────────────────────────────────────
+
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         setupBottomNav();
         setupBanners();
+        setupSearchBar();
         setupRecyclerViews();
         observeViewModel();
+//
+//        // Tạm thời gọi Seeder để tự động thêm dữ liệu mẫu.
+//        // Sau khi Firebase có dữ liệu, bạn có thể xóa dòng này đi.
+//        com.example.angi_didau.database.FirebaseSeeder.seedData();
+    }
+
+    private void setupSearchBar() {
+        View searchBar = findViewById(R.id.cardSearch);
+        if (searchBar != null) {
+            searchBar.setOnClickListener(v ->
+                    startActivity(new Intent(this, SearchActivity.class)));
+        }
+        
+        // Ensure clicking the EditText also triggers the card's click
+        View etSearch = findViewById(R.id.etSearch);
+        if (etSearch != null) {
+            etSearch.setOnClickListener(v -> 
+                    startActivity(new Intent(this, SearchActivity.class)));
+        }
     }
 
     private void setupBanners() {
         View cardFood = findViewById(R.id.cardFood);
         if (cardFood != null) {
-            cardFood.setOnClickListener(v -> {
-                startActivity(new Intent(this, com.example.angi_didau.ui.food.FoodListActivity.class));
-            });
+            cardFood.setOnClickListener(v ->
+                    startActivity(new Intent(this, FoodListActivity.class)));
         }
-        
+
         View cardLocation = findViewById(R.id.cardLocation);
         if (cardLocation != null) {
-            cardLocation.setOnClickListener(v -> {
-                startActivity(new Intent(this, com.example.angi_didau.ui.location.LocationListActivity.class));
-            });
+            cardLocation.setOnClickListener(v ->
+                    startActivity(new Intent(this, LocationListActivity.class)));
         }
     }
 
@@ -68,42 +124,53 @@ public class HomeActivity extends AppCompatActivity {
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvTrendingFoods.setAdapter(trendingFoodAdapter);
 
+        // Click → FoodDetailActivity
+        trendingFoodAdapter.setOnItemClickListener(food -> {
+            Intent intent = new Intent(this, FoodDetailActivity.class);
+            intent.putExtra(AppConstants.EXTRA_FOOD_ID, food.getId());
+            startActivity(intent);
+        });
+
         // Recommended Locations — vertical list
         RecyclerView rvRecommendedLocations = findViewById(R.id.rvRecommendations);
         recommendedLocationAdapter = new RecommendedLocationAdapter();
         rvRecommendedLocations.setLayoutManager(new LinearLayoutManager(this));
         rvRecommendedLocations.setAdapter(recommendedLocationAdapter);
+
+        // Click → LocationDetailActivity
+        recommendedLocationAdapter.setOnItemClickListener(location -> {
+            Intent intent = new Intent(this, LocationDetailActivity.class);
+            intent.putExtra(AppConstants.EXTRA_LOCATION_ID, location.getId());
+            startActivity(intent);
+        });
     }
 
     private void setupBottomNav() {
         // Highlight Home Tab
         ((TextView) findViewById(R.id.tvNavHome)).setTextColor(getResources().getColor(R.color.primary_container));
 
-        // Dim others (already default, but ensure Random is inactive)
+        // Dim others
         ((TextView) findViewById(R.id.tvNavRandom)).setTextColor(getResources().getColor(R.color.secondary));
-        
-        // Random Click
+
+        // Navigation clicks
         findViewById(R.id.navRandom).setOnClickListener(v -> {
             startActivity(new Intent(this, RandomActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });
-        
-        // Discover Click
+
         findViewById(R.id.navDiscover).setOnClickListener(v -> {
             startActivity(new Intent(this, DiscoverActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });
-        
-        // Favorites Click
+
         findViewById(R.id.navFavorites).setOnClickListener(v -> {
             startActivity(new Intent(this, FavoritesActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });
 
-        // Profile Click
         findViewById(R.id.navProfile).setOnClickListener(v -> {
             startActivity(new Intent(this, ProfileActivity.class));
             finish();
@@ -117,29 +184,18 @@ public class HomeActivity extends AppCompatActivity {
      */
     private void observeViewModel() {
         homeViewModel.getTrendingFoods().observe(this, foods -> {
-            if (foods != null && !foods.isEmpty()) {
-                trendingFoodAdapter.submitList(foods);
-            } else {
-                // Mock data for UI presentation
-                java.util.List<com.example.angi_didau.data.model.Food> dummyFoods = java.util.Arrays.asList(
-                    new com.example.angi_didau.data.model.Food("1", "Waffle Chocolate Dâu Tây", "Thơm ngon", 60000, "", 4.8f),
-                    new com.example.angi_didau.data.model.Food("2", "Bảo tàng Mỹ thuật", "Khám phá", 30000, "", 4.5f)
-                );
-                trendingFoodAdapter.submitList(dummyFoods);
-            }
+            trendingFoodAdapter.submitList(foods);
         });
 
         homeViewModel.getRecommendedLocations().observe(this, locations -> {
-            if (locations != null && !locations.isEmpty()) {
-                recommendedLocationAdapter.submitList(locations);
-            } else {
-                // Mock data for UI presentation
-                java.util.List<com.example.angi_didau.data.model.Location> dummyLocations = java.util.Arrays.asList(
-                    new com.example.angi_didau.data.model.Location("1", "Phở Cuốn Hương Mai", "Đặc sản Hà Nội - Ẩm thực", "", 0, 0, 4.9f),
-                    new com.example.angi_didau.data.model.Location("2", "Nhà Hàng Ngon", "Không gian sân vườn - Quận 3", "", 0, 0, 4.8f)
-                );
-                recommendedLocationAdapter.submitList(dummyLocations);
-            }
+            recommendedLocationAdapter.submitList(locations);
         });
+    }
+
+    private void navigateToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }

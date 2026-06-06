@@ -42,7 +42,7 @@
                 android:orientation="vertical"
                 android:layout_marginStart="12dp"
                 app:layout_constraintStart_toEndOf="@id/civUserAvatar"
-                app:layout_constraintEnd_toStartOf="@id/ivNotification"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent">
 
@@ -62,18 +62,6 @@
                     android:textSize="18sp"
                     android:textStyle="bold"/>
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/ivNotification"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_popup_reminder"
-                app:tint="@color/primary_container"
-                android:contentDescription="@string/content_description_notification"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -114,7 +102,7 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@android:drawable/ic_menu_search"
+                        android:src="@drawable/ic_search"
                         app:tint="@color/secondary"
                         android:contentDescription="@null"/>
 
@@ -123,6 +111,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:clickable="true"
                         android:hint="Bạn đang thèm gì hôm nay?"
                         android:textSize="14sp"
                         android:layout_marginStart="8dp"
@@ -151,7 +142,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@android:drawable/sym_def_app_icon"
+                        android:src="@drawable/ic_restaurant_menu"
                         android:scaleType="centerCrop"
                         android:contentDescription="@string/content_description_food_image"/>
 
@@ -165,7 +156,7 @@
                         android:layout_height="32dp"
                         android:layout_gravity="end|top"
                         android:layout_margin="16dp"
-                        android:src="@android:drawable/ic_menu_manage"
+                        android:src="@drawable/ic_settings"
                         app:tint="@color/white"/>
 
                     <LinearLayout
@@ -201,7 +192,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@android:drawable/sym_def_app_icon"
+                        android:src="@drawable/ic_location_on"
                         android:scaleType="centerCrop"
                         android:contentDescription="@string/content_description_location_image"/>
 
@@ -215,7 +206,7 @@
                         android:layout_height="32dp"
                         android:layout_gravity="end|top"
                         android:layout_margin="16dp"
-                        android:src="@android:drawable/ic_menu_mylocation"
+                        android:src="@drawable/ic_near_me"
                         app:tint="@color/white"/>
 
                     <LinearLayout
@@ -241,206 +232,6 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- Categories Label -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="24dp"
-                android:text="Danh mục"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/on_surface"/>
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:scrollbars="none"
-                android:clipToPadding="false"
-                android:paddingHorizontal="20dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Category: Cafe -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginEnd="16dp">
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardBackgroundColor="@color/primary_container"
-                            app:cardElevation="0dp">
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:src="@android:drawable/ic_menu_camera"
-                                app:tint="@color/white"/>
-                        </androidx.cardview.widget.CardView>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/category_cafe"
-                            android:layout_marginTop="8dp"
-                            android:textSize="12sp"
-                            android:textColor="@color/on_surface"/>
-                    </LinearLayout>
-                    
-                    <!-- Category: Nhà hàng -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginEnd="16dp">
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardBackgroundColor="@color/surface_container_low"
-                            app:cardElevation="0dp">
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:src="@android:drawable/ic_menu_manage"
-                                app:tint="@color/on_surface_variant"/>
-                        </androidx.cardview.widget.CardView>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Nhà hàng"
-                            android:layout_marginTop="8dp"
-                            android:textSize="12sp"
-                            android:textColor="@color/on_surface"/>
-                    </LinearLayout>
-                    
-                    <!-- Category: Ăn vặt -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginEnd="16dp">
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardBackgroundColor="@color/surface_container_low"
-                            app:cardElevation="0dp">
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:src="@android:drawable/ic_menu_add"
-                                app:tint="@color/on_surface_variant"/>
-                        </androidx.cardview.widget.CardView>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ăn vặt"
-                            android:layout_marginTop="8dp"
-                            android:textSize="12sp"
-                            android:textColor="@color/on_surface"/>
-                    </LinearLayout>
-                    
-                    <!-- Category: Buffet -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginEnd="16dp">
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardBackgroundColor="@color/surface_container_low"
-                            app:cardElevation="0dp">
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:src="@android:drawable/ic_menu_sort_by_size"
-                                app:tint="@color/on_surface_variant"/>
-                        </androidx.cardview.widget.CardView>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Buffet"
-                            android:layout_marginTop="8dp"
-                            android:textSize="12sp"
-                            android:textColor="@color/on_surface"/>
-                    </LinearLayout>
-                    
-                    <!-- Category: Công viên -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginEnd="16dp">
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardBackgroundColor="@color/surface_container_low"
-                            app:cardElevation="0dp">
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:src="@android:drawable/ic_menu_gallery"
-                                app:tint="@color/on_surface_variant"/>
-                        </androidx.cardview.widget.CardView>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Công viên"
-                            android:layout_marginTop="8dp"
-                            android:textSize="12sp"
-                            android:textColor="@color/on_surface"/>
-                    </LinearLayout>
-                    
-                    <!-- Category: Xem phim -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:layout_marginEnd="16dp">
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardBackgroundColor="@color/surface_container_low"
-                            app:cardElevation="0dp">
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:src="@android:drawable/ic_menu_slideshow"
-                                app:tint="@color/on_surface_variant"/>
-                        </androidx.cardview.widget.CardView>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Xem phim"
-                            android:layout_marginTop="8dp"
-                            android:textSize="12sp"
-                            android:textColor="@color/on_surface"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-            </HorizontalScrollView>
 
             <!-- Trending Section Header -->
             <LinearLayout
@@ -458,14 +249,6 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/on_surface"/>
-                <TextView
-                    android:id="@+id/tvSeeAllTrending"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/action_see_all"
-                    android:textColor="@color/primary_container"
-                    android:textStyle="bold"
-                    android:textSize="12sp"/>
             </LinearLayout>
 
             <!-- Trending RecyclerView -->
@@ -506,20 +289,6 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!-- FAB Random -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabRandom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="110dp"
-        android:src="@android:drawable/ic_menu_rotate"
-        android:contentDescription="@null"
-        app:backgroundTint="@color/primary_container"
-        app:tint="@color/white"
-        app:elevation="6dp"/>
 
     <!-- Bottom Nav -->
     <include layout="@layout/layout_bottom_nav" />

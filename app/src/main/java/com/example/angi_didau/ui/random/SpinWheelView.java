@@ -33,7 +33,7 @@ public class SpinWheelView extends View {
     private OnSpinListener listener;
 
     public interface OnSpinListener {
-        void onSpinEnd(String result);
+        void onSpinEnd(int index, String result);
     }
 
     public SpinWheelView(Context context) {
@@ -138,7 +138,7 @@ public class SpinWheelView extends View {
                 isSpinning = false;
                 currentAngle = endAngle % 360;
                 if (listener != null) {
-                    listener.onSpinEnd(items.get(targetIndex));
+                    listener.onSpinEnd(targetIndex, items.get(targetIndex));
                 }
             }
 

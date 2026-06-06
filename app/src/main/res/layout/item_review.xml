@@ -20,7 +20,7 @@
             android:id="@+id/imgReviewAvatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@android:drawable/sym_def_app_icon"
+            android:src="@drawable/ic_person"
             app:civ_border_color="@color/surface_container"
             app:civ_border_width="1dp"/>
 
@@ -62,7 +62,7 @@
             <ImageView
                 android:layout_width="14dp"
                 android:layout_height="14dp"
-                android:src="@android:drawable/star_on"
+                android:src="@drawable/ic_star"
                 app:tint="@color/primary"/>
             <TextView
                 android:id="@+id/tvReviewRating"

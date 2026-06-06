@@ -33,40 +33,13 @@
                     android:padding="8dp"
                     android:background="@drawable/shape_pill"
                     android:backgroundTint="@color/surface_container_lowest"
-                    android:src="@android:drawable/ic_menu_revert"
+                    android:src="@drawable/ic_arrow_back"
                     app:tint="@color/on_surface"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    app:layout_constraintEnd_toEndOf="parent">
-                    
-                    <ImageView
-                        android:id="@+id/btnShare"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:padding="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/shape_pill"
-                        android:backgroundTint="@color/surface_container_lowest"
-                        android:src="@android:drawable/ic_menu_share"
-                        app:tint="@color/on_surface"/>
-                        
-                    <ImageView
-                        android:id="@+id/btnFavorite"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:padding="8dp"
-                        android:background="@drawable/shape_pill"
-                        android:backgroundTint="@color/surface_container_lowest"
-                        android:src="@android:drawable/ic_menu_save"
-                        app:tint="@color/on_surface"/>
-                </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -91,40 +64,10 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="16dp">
                 
-                <HorizontalScrollView
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vpLocationHero"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none">
-                    
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="300dp"
-                            android:layout_height="225dp"
-                            android:layout_marginEnd="16dp"
-                            app:cardCornerRadius="24dp">
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:src="@android:drawable/sym_def_app_icon"/>
-                        </androidx.cardview.widget.CardView>
-                        
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="300dp"
-                            android:layout_height="225dp"
-                            app:cardCornerRadius="24dp">
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:src="@android:drawable/sym_def_app_icon"/>
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-                </HorizontalScrollView>
+                    android:layout_height="225dp" />
                 
                 <!-- Photos Counter Indicator -->
                 <TextView
@@ -177,7 +120,7 @@
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:src="@android:drawable/star_on"
+                            android:src="@drawable/ic_star"
                             app:tint="@color/primary"/>
                         <TextView
                             android:id="@+id/tvLocationRating"
@@ -234,7 +177,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
-                            android:src="@android:drawable/ic_menu_recent_history"
+                            android:src="@drawable/ic_clock"
                             app:tint="@color/primary"/>
                     </androidx.cardview.widget.CardView>
                     
@@ -276,7 +219,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
-                            android:src="@android:drawable/ic_menu_info_details"
+                            android:src="@drawable/ic_reviews"
                             app:tint="@color/primary"/>
                     </androidx.cardview.widget.CardView>
                     
@@ -309,74 +252,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="24dp"/>
 
-            <!-- Action Bar Buttons -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="32dp">
-                
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/btnNavigate"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="16dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardBackgroundColor="@color/primary_container"
-                    app:cardElevation="2dp">
-                    
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@android:drawable/ic_dialog_map"
-                            app:tint="@color/white"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="Navigate"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/btnCall"
-                    android:layout_width="56dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="16dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardBackgroundColor="@color/surface_container">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@android:drawable/ic_menu_call"
-                        app:tint="#68645e"/>
-                </androidx.cardview.widget.CardView>
-                
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/btnWebsite"
-                    android:layout_width="56dp"
-                    android:layout_height="48dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardBackgroundColor="@color/surface_container">
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@android:drawable/ic_menu_info_details"
-                        app:tint="#68645e"/>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
+
 
             <!-- Tabs Navigation -->
             <com.google.android.material.tabs.TabLayout
@@ -426,7 +302,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        android:src="@android:drawable/ic_menu_edit"
+        android:src="@drawable/ic_edit"
         app:backgroundTint="@color/primary_container"
         app:tint="@color/white"
         app:elevation="8dp"/>

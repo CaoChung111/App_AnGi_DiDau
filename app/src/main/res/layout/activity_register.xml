@@ -156,41 +156,18 @@
                             android:textColorHint="@color/outline_variant" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Phone Field -->
+                    <!-- Phone Field (Hidden for now as we don't store it) -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginBottom="4dp"
                         android:text="Số điện thoại"
+                        android:visibility="gone"
                         android:textColor="@color/on_surface_variant"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        app:boxBackgroundColor="@color/surface_container_lowest"
-                        app:boxCornerRadiusBottomEnd="12dp"
-                        app:boxCornerRadiusBottomStart="12dp"
-                        app:boxCornerRadiusTopEnd="12dp"
-                        app:boxCornerRadiusTopStart="12dp"
-                        app:boxStrokeColor="@color/primary_container"
-                        app:hintEnabled="false"
-                        app:startIconDrawable="@drawable/ic_call"
-                        app:startIconTint="@color/outline_color">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etPhone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="0123 456 789"
-                            android:inputType="phone"
-                            android:paddingTop="16dp"
-                            android:paddingBottom="16dp"
-                            android:textColorHint="@color/outline_variant" />
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Password Field -->
                     <TextView
@@ -269,16 +246,6 @@
                             android:textColorHint="@color/outline_variant" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Terms Checkbox -->
-                    <CheckBox
-                        android:id="@+id/cbTerms"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:buttonTint="@color/primary_container"
-                        android:text="Tôi đồng ý với Điều khoản sử dụng và Chính sách bảo mật."
-                        android:textColor="@color/on_surface_variant"
-                        android:textSize="12sp" />
 
                     <!-- Primary Action -->
                     <com.google.android.material.button.MaterialButton

@@ -54,7 +54,7 @@
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@android:drawable/ic_menu_edit"
+                        android:src="@drawable/ic_edit"
                         app:tint="@color/primary_container"
                         android:layout_marginBottom="12dp"/>
                         
@@ -82,7 +82,7 @@
                         android:text="Thêm món ăn / địa điểm"
                         android:textAllCaps="false"
                         app:cornerRadius="8dp"
-                        app:icon="@android:drawable/ic_input_add"
+                        app:icon="@drawable/ic_plus"
                         android:backgroundTint="@color/primary_container"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -97,150 +97,15 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- Placeholder Item 1 -->
-            <androidx.cardview.widget.CardView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFavorites"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/surface_container_lowest">
-                
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-                    
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:scaleType="centerCrop"
-                        android:src="@android:drawable/sym_def_app_icon"
-                        android:background="@color/surface_container"/>
-                        
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
-                        
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Phở Thìn Lò Đúc"
-                                android:textColor="@color/on_surface"
-                                android:textStyle="bold"
-                                android:textSize="16sp"/>
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@android:drawable/btn_star_big_on"
-                                app:tint="#FFC107"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="5.0"
-                                android:textColor="@color/on_surface"
-                                android:textStyle="bold"
-                                android:layout_marginStart="4dp"/>
-                        </LinearLayout>
-                        
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="#concept-bữa-sáng #đậm-vị"
-                            android:textColor="@color/primary_container"
-                            android:textSize="12sp"
-                            android:layout_marginTop="4dp"/>
-                            
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Nước dùng siêu béo ngậy, nhớ dặn nhiều hành lá. Rất hợp đi ăn sáng mùa đông."
-                            android:textColor="@color/secondary"
-                            android:textSize="12sp"
-                            android:layout_marginTop="8dp"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Placeholder Item 2 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/surface_container_lowest">
-                
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-                    
-                    <ImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:scaleType="centerCrop"
-                        android:src="@android:drawable/sym_def_app_icon"
-                        android:background="@color/surface_container"/>
-                        
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
-                        
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="The Workshop Cafe"
-                                android:textColor="@color/on_surface"
-                                android:textStyle="bold"
-                                android:textSize="16sp"/>
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@android:drawable/btn_star_big_on"
-                                app:tint="#FFC107"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="4.5"
-                                android:textColor="@color/on_surface"
-                                android:textStyle="bold"
-                                android:layout_marginStart="4dp"/>
-                        </LinearLayout>
-                        
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="#concept-hẹn-hò #yên-tĩnh"
-                            android:textColor="@color/primary_container"
-                            android:textSize="12sp"
-                            android:layout_marginTop="4dp"/>
-                            
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="View đẹp nhìn ra phố, cafe hơi đắng nhưng không gian cực kỳ chill để làm việc."
-                            android:textColor="@color/secondary"
-                            android:textSize="12sp"
-                            android:layout_marginTop="8dp"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false"
+                android:paddingBottom="16dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_favorite"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

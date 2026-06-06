@@ -1,5 +1,6 @@
-package com.example.angi_didau.ui.discover;
+package com.example.angi_didau.adapter;
 
+import com.example.angi_didau.data.model.TimelineItem;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +47,31 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         if (position == 0) {
             // We'll just let it draw, or we could modify constraints if we wanted to be pixel-perfect.
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (item.getEntityId() != null && !item.getEntityId().isEmpty()) {
+                android.content.Intent intent;
+                if ("Food".equalsIgnoreCase(item.getEntityType())) {
+                    intent = new android.content.Intent(v.getContext(), com.example.angi_didau.ui.food.FoodDetailActivity.class);
+                    intent.putExtra(com.example.angi_didau.common.constant.AppConstants.EXTRA_FOOD_ID, item.getEntityId());
+                } else {
+                    intent = new android.content.Intent(v.getContext(), com.example.angi_didau.ui.location.LocationDetailActivity.class);
+                    intent.putExtra(com.example.angi_didau.common.constant.AppConstants.EXTRA_LOCATION_ID, item.getEntityId());
+                }
+                v.getContext().startActivity(intent);
+            } else {
+                android.widget.Toast.makeText(v.getContext(), "Mục này chưa được liên kết với dữ liệu chi tiết", android.widget.Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return items == null ? 0 : items.size();
+    }
+    
+    public List<TimelineItem> getItems() {
+        return items;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

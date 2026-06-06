@@ -18,6 +18,7 @@
         android:layout_marginBottom="16dp"/>
 
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Thêm Ghi Chú Mới"
@@ -29,6 +30,7 @@
 
     <!-- Tên Món Ăn / Địa điểm -->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -48,6 +50,7 @@
 
     <!-- Địa chỉ -->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

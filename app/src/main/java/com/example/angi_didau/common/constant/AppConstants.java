@@ -24,12 +24,14 @@ public final class AppConstants {
     public static final String COLLECTION_LOCATIONS = "Locations";
     public static final String COLLECTION_REVIEWS   = "Reviews";
     public static final String COLLECTION_USERS     = "Users";
+    public static final String COLLECTION_FAVORITES = "Favorites";
 
     // ──────────────────────────────────────────
     //  Firestore Query Limits
     // ──────────────────────────────────────────
     public static final long TRENDING_FOODS_LIMIT        = 5L;
     public static final long RECOMMENDED_LOCATIONS_LIMIT = 5L;
+    public static final long LIST_PAGE_LIMIT             = 20L;
 
     // ──────────────────────────────────────────
     //  SharedPreferences Keys
@@ -42,6 +44,20 @@ public final class AppConstants {
     // ──────────────────────────────────────────
     //  Intent Extra Keys
     // ──────────────────────────────────────────
-    public static final String EXTRA_FOOD_ID     = "extra_food_id";
-    public static final String EXTRA_LOCATION_ID = "extra_location_id";
+    public static final String EXTRA_FOOD_ID       = "extra_food_id";
+    public static final String EXTRA_LOCATION_ID   = "extra_location_id";
+    public static final String EXTRA_ENTITY_TYPE   = "extra_entity_type";
+    public static final String EXTRA_ENTITY_NAME   = "extra_entity_name";
+
+    // ──────────────────────────────────────────
+    //  Entity Types (for Reviews & Favorites)
+    // ──────────────────────────────────────────
+    public static final String ENTITY_TYPE_FOOD     = "food";
+    public static final String ENTITY_TYPE_LOCATION = "location";
+
+    // ──────────────────────────────────────────
+    //  Search
+    // ──────────────────────────────────────────
+    /** Debounce delay in ms before triggering search query (avoids excessive Firestore reads). */
+    public static final long SEARCH_DEBOUNCE_MS = 500L;
 }
