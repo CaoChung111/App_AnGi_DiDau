@@ -6,45 +6,183 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".activities.location.LocationDetailActivity">
+    tools:context=".ui.location.LocationDetailActivity">
 
-    <!-- Top AppBar (Sticky) -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#CCFBF9F8"
+        android:background="@color/background"
         app:elevation="0dp">
 
-        <androidx.appcompat.widget.Toolbar
+        <!-- Scrollable Header Content -->
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:contentInsetStart="0dp"
-            app:contentInsetEnd="0dp">
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingHorizontal="20dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="?attr/actionBarSize"> <!-- Offset for Toolbar -->
 
+                <!-- Hero Gallery Carousel -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="16dp">
+                    
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/vpLocationHero"
+                        android:layout_width="match_parent"
+                        android:layout_height="225dp" />
+                    
+                    <!-- Photos Counter Indicator -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="16dp"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:background="@drawable/shape_pill"
+                        android:backgroundTint="#80000000"
+                        android:text="1/12 Photos"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"/>
+                </FrameLayout>
+
+                <!-- Place Identity -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="24dp">
+                    
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        
+                        <TextView
+                            android:id="@+id/tvLocationName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="An Nam Bistro &amp; Lounge"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/on_surface"/>
+                            
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_pill"
+                            android:backgroundTint="#1Aff6b35"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:gravity="center_vertical"
+                            android:layout_marginStart="8dp">
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_star"
+                                app:tint="@color/primary"/>
+                            <TextView
+                                android:id="@+id/tvLocationRating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:text="4.8"
+                                android:textColor="@color/primary"
+                                android:textStyle="bold"
+                                android:textSize="14sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                    
+                    <!-- Price and Category -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical">
+                        
+                        <TextView
+                            android:id="@+id/tvLocationPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Miễn phí"
+                            android:textColor="#388E3C"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="8dp"/>
+                            
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="•"
+                            android:textColor="@color/secondary"
+                            android:layout_marginEnd="8dp"/>
+                            
+                        <TextView
+                            android:id="@+id/tvLocationCategory"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Modern Vietnamese Cuisine • Bistro • District 1"
+                            android:textColor="@color/secondary"
+                            android:textSize="14sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <!-- Sticky Toolbar (Back button) -->
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:contentInsetStart="0dp"
+                app:contentInsetEnd="0dp">
+                
                 <ImageView
                     android:id="@+id/btnBack"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
                     android:padding="8dp"
                     android:background="@drawable/shape_pill"
                     android:backgroundTint="@color/surface_container_lowest"
                     android:src="@drawable/ic_arrow_back"
-                    app:tint="@color/on_surface"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:tint="@color/on_surface" />
 
+                <!-- Align to End using layout_gravity -->
+                <ImageView
+                    android:id="@+id/btnFavorite"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_gravity="end"
+                    android:padding="8dp"
+                    android:background="@drawable/shape_pill"
+                    android:backgroundTint="@color/surface_container_lowest"
+                    android:src="@drawable/ic_favorite"
+                    app:tint="@color/on_surface" />
+            </androidx.appcompat.widget.Toolbar>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Main Content -->
+    <!-- Inline Scrollable Content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -57,240 +195,183 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Hero Gallery Carousel (Mockup using HorizontalScrollView) -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="16dp">
-                
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/vpLocationHero"
-                    android:layout_width="match_parent"
-                    android:layout_height="225dp" />
-                
-                <!-- Photos Counter Indicator -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="16dp"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="4dp"
-                    android:background="@drawable/shape_pill"
-                    android:backgroundTint="#80000000"
-                    android:text="1/12 Photos"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"/>
-            </FrameLayout>
-
-            <!-- Place Identity -->
+            <!-- OVERVIEW SECTION -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="24dp">
+                android:paddingTop="16dp">
                 
+                <!-- Map Preview Block -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
-                    
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
                     <TextView
-                        android:id="@+id/tvLocationName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="An Nam Bistro &amp; Lounge"
-                        android:textSize="24sp"
+                        android:text="Location"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/on_surface"/>
-                        
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/tvViewMap"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_pill"
-                        android:backgroundTint="#1Aff6b35"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:gravity="center_vertical"
-                        android:layout_marginStart="8dp">
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_star"
-                            app:tint="@color/primary"/>
-                        <TextView
-                            android:id="@+id/tvLocationRating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="4.8"
-                            android:textColor="@color/primary"
-                            android:textStyle="bold"
-                            android:textSize="14sp"/>
-                    </LinearLayout>
+                        android:text="View larger"
+                        android:textColor="@color/primary"
+                        android:textStyle="bold"
+                        android:textSize="12sp"/>
                 </LinearLayout>
                 
-                <TextView
-                    android:id="@+id/tvLocationCategory"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvMapContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="2dp"
+                    android:layout_marginBottom="16dp">
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@android:drawable/sym_def_app_icon"
+                            android:scaleType="centerCrop"/>
+                        
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center"
+                            android:src="@color/primary_container"
+                            app:civ_border_width="4dp"
+                            app:civ_border_color="@color/white"/>
+                    </FrameLayout>
+                </androidx.cardview.widget.CardView>
+                
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Modern Vietnamese Cuisine • Bistro • District 1"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="24dp">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@android:drawable/ic_menu_mylocation"
+                        app:tint="@color/secondary"
+                        android:layout_marginTop="2dp"/>
+                    <TextView
+                        android:id="@+id/tvOverviewAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="123 Le Loi Street, Ben Nghe Ward, District 1, Ho Chi Minh City, Vietnam"
+                        android:textColor="@color/on_surface"
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="4dp"/>
+                </LinearLayout>
+                
+                <!-- About Section -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="About"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/on_surface"
+                    android:layout_marginBottom="8dp"/>
+                    
+                <TextView
+                    android:id="@+id/tvOverviewAbout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chưa có mô tả chi tiết cho địa điểm này."
                     android:textColor="@color/secondary"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="4dp"/>
+                    
             </LinearLayout>
 
-            <!-- Quick Info Grid -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#4DE1BFB5"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="16dp"/>
-                
+            <!-- REVIEWS SECTION -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="20dp"
-                android:paddingVertical="16dp"
-                android:baselineAligned="false">
-                
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:background="@color/background">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/outline_variant"
+                    android:layout_marginBottom="24dp"/>
+
+                <!-- Average Rating Header -->
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
-                    
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardBackgroundColor="@color/surface_container"
-                        app:cardElevation="0dp">
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_clock"
-                            app:tint="@color/primary"/>
-                    </androidx.cardview.widget.CardView>
-                    
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="24dp">
+
+                    <TextView
+                        android:id="@+id/tvAverageRatingBig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.0"
+                        android:textColor="@color/on_surface"
+                        android:textSize="48sp"
+                        android:textStyle="bold" />
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_marginStart="8dp">
-                        <TextView
+                        android:layout_marginStart="16dp">
+
+                        <RatingBar
+                            android:id="@+id/rbAverageRating"
+                            style="?android:attr/ratingBarStyleSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Status"
+                            android:numStars="5"
+                            android:rating="0"
+                            android:stepSize="0.1"
+                            android:theme="@style/Widget.AppCompat.RatingBar"
+                            android:progressTint="@color/primary" />
+
+                        <TextView
+                            android:id="@+id/tvTotalReviews"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Dựa trên 0 đánh giá"
                             android:textColor="@color/secondary"
-                            android:textSize="12sp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Open until 22:00"
-                            android:textColor="#16A34A"
-                            android:textSize="14sp"
-                            android:textStyle="bold"/>
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
-                
-                <LinearLayout
-                    android:layout_width="0dp"
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/outline_variant"
+                    android:layout_marginBottom="16dp"/>
+
+                <!-- Reviews List -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvReviews"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-                    
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardBackgroundColor="@color/surface_container"
-                        app:cardElevation="0dp">
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_reviews"
-                            app:tint="@color/primary"/>
-                    </androidx.cardview.widget.CardView>
-                    
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginStart="8dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Reviews"
-                            android:textColor="@color/secondary"
-                            android:textSize="12sp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1,240 verified"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-                </LinearLayout>
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false" />
+
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#4DE1BFB5"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="24dp"/>
-
-
-
-            <!-- Tabs Navigation -->
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/background"
-                app:tabIndicatorColor="@color/primary"
-                app:tabSelectedTextColor="@color/primary"
-                app:tabTextColor="@color/secondary"
-                app:tabMode="fixed"
-                app:tabGravity="fill">
-                
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Overview"/>
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Photos"/>
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Reviews"/>
-            </com.google.android.material.tabs.TabLayout>
-            
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#33E1BFB5"/>
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"/>
-                
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

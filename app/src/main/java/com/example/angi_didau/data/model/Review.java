@@ -10,7 +10,9 @@ package com.example.angi_didau.data.model;
 public class Review {
     private String id;
     private String userId;
+    private String userName; // For UI display
     private String entityId;
+    private String entityName; // For UI display in User Reviews
     private String content;
     private float rating;
     private long timestamp;
@@ -18,11 +20,13 @@ public class Review {
     /** Required no-arg constructor for Firestore deserialization. */
     public Review() {}
 
-    public Review(String id, String userId, String entityId,
+    public Review(String id, String userId, String userName, String entityId, String entityName,
                   String content, float rating, long timestamp) {
         this.id = id;
         this.userId = userId;
+        this.userName = userName;
         this.entityId = entityId;
+        this.entityName = entityName;
         this.content = content;
         this.rating = rating;
         this.timestamp = timestamp;
@@ -34,8 +38,14 @@ public class Review {
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
 
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
+
     public String getEntityId() { return entityId; }
     public void setEntityId(String entityId) { this.entityId = entityId; }
+
+    public String getEntityName() { return entityName; }
+    public void setEntityName(String entityName) { this.entityName = entityName; }
 
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }

@@ -239,30 +239,29 @@ public class RandomActivity extends AppCompatActivity {
             boolean passBudget = true;
             boolean passCategory = true;
 
-            Double minPrice = doc.getDouble("minPrice");
-            Double maxPrice = doc.getDouble("maxPrice");
+            Double price = doc.getDouble("price");
             
             // Lọc ngân sách
-            if (!currentBudgetFilter.equals("Tất cả") && minPrice != null) {
-                if (currentBudgetFilter.equals("Dưới 100k") && minPrice > 100000) {
+            if (!currentBudgetFilter.equals("Tất cả") && price != null) {
+                if (currentBudgetFilter.equals("Dưới 100k") && price > 100000) {
                     passBudget = false;
-                } else if (currentBudgetFilter.equals("100k - 500k") && (minPrice < 100000 || minPrice > 500000)) {
+                } else if (currentBudgetFilter.equals("100k - 500k") && (price < 100000 || price > 500000)) {
                     passBudget = false;
-                } else if (currentBudgetFilter.equals("Trên 500k") && maxPrice != null && maxPrice < 500000) {
+                } else if (currentBudgetFilter.equals("Trên 500k") && price < 500000) {
                     passBudget = false;
                 }
             }
 
-            // Lọc thể loại (ví dụ: title, type, desc có chứa từ khóa)
+            // Lọc thể loại
             if (!currentCategoryFilter.equals("Tất cả món") && !currentCategoryFilter.equals("Tất cả loại hình")) {
-                String type = doc.getString("type");
-                String title = doc.getString("title");
-                if (type != null && title != null) {
-                    if (!type.toLowerCase().contains(currentCategoryFilter.toLowerCase()) && 
-                        !title.toLowerCase().contains(currentCategoryFilter.toLowerCase())) {
-                        passCategory = false;
-                    }
-                }
+                String desc = doc.getString("description");
+                String name = doc.getString("name");
+                
+                boolean match = false;
+                if (name != null && name.toLowerCase().contains(currentCategoryFilter.toLowerCase())) match = true;
+                if (desc != null && desc.toLowerCase().contains(currentCategoryFilter.toLowerCase())) match = true;
+                
+                if (!match) passCategory = false;
             }
 
             if (passBudget && passCategory) {
@@ -279,8 +278,8 @@ public class RandomActivity extends AppCompatActivity {
 
         List<String> displayNames = new ArrayList<>();
         for (QueryDocumentSnapshot doc : currentSpinData) {
-            String title = doc.getString("title");
-            displayNames.add(title != null ? title : "Unknown");
+            String name = doc.getString("name");
+            displayNames.add(name != null ? name : "Unknown");
         }
 
         if (displayNames.isEmpty()) {

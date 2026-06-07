@@ -37,9 +37,27 @@ public class SearchViewModel extends ViewModel {
     private final MutableLiveData<Boolean>        isSearching     = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean>        isEmpty         = new MutableLiveData<>(false);
 
+    private List<Food> cachedFoods = new ArrayList<>();
+    private List<Location> cachedLocations = new ArrayList<>();
+    private String currentQuery = "";
+
     public SearchViewModel() {
         foodRepository     = FoodRepository.getInstance();
         locationRepository = LocationRepository.getInstance();
+        
+        foodRepository.getAllFoods().observeForever(foods -> {
+            if (foods != null) {
+                cachedFoods = foods;
+                if (!currentQuery.isEmpty()) executeSearch(currentQuery);
+            }
+        });
+        
+        locationRepository.getAllLocations().observeForever(locations -> {
+            if (locations != null) {
+                cachedLocations = locations;
+                if (!currentQuery.isEmpty()) executeSearch(currentQuery);
+            }
+        });
     }
 
     // ──────────────────────────────────────────
@@ -82,18 +100,29 @@ public class SearchViewModel extends ViewModel {
     }
 
     private void executeSearch(String query) {
-        // Search foods
-        foodRepository.searchFoods(query).observeForever(foods -> {
-            foodResults.setValue(foods != null ? foods : new ArrayList<>());
-            checkIfEmpty();
-        });
+        currentQuery = query;
+        String lowerQuery = query.toLowerCase();
 
-        // Search locations in parallel
-        locationRepository.searchLocations(query).observeForever(locations -> {
-            locationResults.setValue(locations != null ? locations : new ArrayList<>());
-            isSearching.setValue(false);
-            checkIfEmpty();
-        });
+        List<Food> filteredFoods = new ArrayList<>();
+        for (Food f : cachedFoods) {
+            if ((f.getName() != null && f.getName().toLowerCase().contains(lowerQuery)) ||
+                (f.getDescription() != null && f.getDescription().toLowerCase().contains(lowerQuery))) {
+                filteredFoods.add(f);
+            }
+        }
+        foodResults.setValue(filteredFoods);
+
+        List<Location> filteredLocations = new ArrayList<>();
+        for (Location l : cachedLocations) {
+            if ((l.getName() != null && l.getName().toLowerCase().contains(lowerQuery)) ||
+                (l.getDescription() != null && l.getDescription().toLowerCase().contains(lowerQuery))) {
+                filteredLocations.add(l);
+            }
+        }
+        locationResults.setValue(filteredLocations);
+
+        isSearching.setValue(false);
+        checkIfEmpty();
     }
 
     private void checkIfEmpty() {

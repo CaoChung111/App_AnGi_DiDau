@@ -177,4 +177,18 @@ public class FoodRepository {
 
         return liveData;
     }
+
+    /**
+     * Updates the average rating of a food document.
+     * @param foodId the document ID
+     * @param newAvg the new average rating
+     */
+    public void updateAverageRating(String foodId, float newAvg) {
+        if (foodId == null || foodId.isEmpty()) return;
+        db.collection(AppConstants.COLLECTION_FOODS)
+                .document(foodId)
+                .update("averageRating", newAvg)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Successfully updated averageRating for " + foodId))
+                .addOnFailureListener(e -> Log.e(TAG, "Failed to update averageRating", e));
+    }
 }

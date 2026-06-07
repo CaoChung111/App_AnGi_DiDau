@@ -73,14 +73,41 @@ public class FoodDetailViewModel extends ViewModel {
     }
 
     /**
-     * Fetch nearby locations serving this food.
-     * Currently using recommended locations as a proxy since we lack geolocation.
+     * Fetch related foods (trending foods as a proxy for related).
      */
-    public LiveData<List<Location>> getNearbyLocations() {
-        if (nearbyLocations == null) {
-            nearbyLocations = locationRepository.getRecommendedLocations();
+    public LiveData<List<Food>> getRelatedFoods() {
+        return foodRepository.getTrendingFoods();
+    }
+
+    private LiveData<Boolean> isFavorite;
+
+    public LiveData<Boolean> getIsFavorite(String foodId) {
+        if (isFavorite == null) {
+            com.google.firebase.auth.FirebaseUser user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null && foodId != null) {
+                isFavorite = com.example.angi_didau.data.repository.FavoritesRepository.getInstance().isFavorite(user.getUid(), foodId);
+            } else {
+                MutableLiveData<Boolean> empty = new MutableLiveData<>(false);
+                isFavorite = empty;
+            }
         }
-        return nearbyLocations;
+        return isFavorite;
+    }
+
+    /**
+     * Toggles favorite status.
+     */
+    public void toggleFavorite(Food food) {
+        com.google.firebase.auth.FirebaseUser user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null && food != null) {
+            Boolean currentStatus = isFavorite != null ? isFavorite.getValue() : false;
+            if (Boolean.TRUE.equals(currentStatus)) {
+                com.example.angi_didau.data.repository.FavoritesRepository.getInstance().removeFavorite(user.getUid(), food.getId());
+            } else {
+                com.example.angi_didau.data.repository.FavoritesRepository.getInstance().addFavorite(
+                        user.getUid(), food.getId(), "food", food.getName(), food.getImageUrl(), "");
+            }
+        }
     }
 
     /** Called by the Activity once food data has been received to stop showing spinner. */

@@ -149,140 +149,10 @@
                         android:textColor="@color/secondary"
                         android:textSize="14sp" />
 
-                    <!-- Tags -->
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        
-                        <androidx.constraintlayout.helper.widget.Flow
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:flow_wrapMode="chain"
-                            app:flow_horizontalStyle="packed"
-                            app:flow_horizontalBias="0"
-                            app:flow_horizontalGap="8dp"
-                            app:flow_verticalGap="8dp"
-                            app:constraint_referenced_ids="tag1,tag2,tag3,tag4" />
 
-                        <TextView
-                            android:id="@+id/tag1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_tag"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
-                            android:text="Traditional"
-                            android:textColor="@color/on_secondary_container"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/tag2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_tag"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
-                            android:text="Street Food"
-                            android:textColor="@color/on_secondary_container"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/tag3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_tag"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
-                            android:text="Pork"
-                            android:textColor="@color/on_secondary_container"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/tag4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_tag"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
-                            android:text="Lunch"
-                            android:textColor="@color/on_secondary_container"
-                            android:textSize="12sp" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Action Buttons Grid -->
-            <!-- Offset margin due to translationY on cardFoodInfo -->
-            <LinearLayout
-                android:id="@+id/llActions"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="-24dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardFoodInfo">
-
-                <LinearLayout
-                    android:id="@+id/llSaveAction"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_action_btn"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_bookmark"
-                        app:tint="@color/primary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Save"
-                        android:textColor="@color/on_surface"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="16dp"
-                    android:layout_height="wrap_content" />
-
-                <LinearLayout
-                    android:id="@+id/llFindNearbyAction"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_action_btn"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_near_me"
-                        app:tint="@color/primary" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Find nearby"
-                        android:textColor="@color/on_surface"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-            </LinearLayout>
 
             <!-- Nearby Section -->
             <RelativeLayout
@@ -290,16 +160,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llActions">
+                app:layout_constraintTop_toBottomOf="@id/cardFoodInfo">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="Nearby restaurants"
+                    android:text="Món ăn cùng thể loại"
                     android:textColor="@color/on_surface"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -315,9 +185,9 @@
                     android:textSize="12sp" />
             </RelativeLayout>
 
-            <!-- Horizontal RecyclerView for Restaurants -->
+            <!-- Horizontal RecyclerView for Related Foods -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvNearbyRestaurants"
+                android:id="@+id/rvRelatedFoods"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -326,6 +196,50 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rlNearbyHeader" />
+
+            <!-- Reviews Header -->
+            <RelativeLayout
+                android:id="@+id/rlReviewsHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvRelatedFoods">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Đánh giá"
+                    android:textColor="@color/on_surface"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTotalReviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="0 đánh giá"
+                    android:textColor="@color/secondary"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <!-- Vertical RecyclerView for Reviews -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvReviews"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingHorizontal="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rlReviewsHeader" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -390,6 +304,7 @@
 
     <!-- Bottom Action Bar -->
     <LinearLayout
+        android:id="@+id/bottomBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_bottom_bar"
@@ -400,7 +315,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Delivery button removed per user request -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAddReview"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_primary_btn"
+            android:text="Viết Đánh Giá"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnDirections"

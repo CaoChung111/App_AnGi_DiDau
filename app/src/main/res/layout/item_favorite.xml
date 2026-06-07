@@ -57,8 +57,17 @@
                     android:id="@+id/ivFavoriteType"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_restaurant_menu"
-                    app:tint="@color/primary_container"/>
+                    app:tint="@color/secondary"/>
+
+                <ImageView
+                    android:id="@+id/btnRemoveFavorite"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_favorite"
+                    app:tint="@color/primary"/>
             </LinearLayout>
             
             <TextView

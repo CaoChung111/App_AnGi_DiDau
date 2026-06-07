@@ -173,4 +173,18 @@ public class LocationRepository {
 
         return liveData;
     }
+
+    /**
+     * Updates the average rating of a location document.
+     * @param locationId the document ID
+     * @param newAvg the new average rating
+     */
+    public void updateAverageRating(String locationId, float newAvg) {
+        if (locationId == null || locationId.isEmpty()) return;
+        db.collection(AppConstants.COLLECTION_LOCATIONS)
+                .document(locationId)
+                .update("averageRating", newAvg)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Successfully updated averageRating for " + locationId))
+                .addOnFailureListener(e -> Log.e(TAG, "Failed to update averageRating", e));
+    }
 }

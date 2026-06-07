@@ -24,6 +24,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     public interface OnFavoriteClickListener {
         void onFavoriteClick(Map<String, Object> favorite);
+        void onRemoveClick(Map<String, Object> favorite);
     }
 
     public FavoriteAdapter(OnFavoriteClickListener listener) {
@@ -62,6 +63,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         private final TextView tvName;
         private final ImageView ivType;
         private final TextView tvNote;
+        private final ImageView btnRemoveFavorite;
 
         public FavoriteViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +71,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             tvName = itemView.findViewById(R.id.tvFavoriteName);
             ivType = itemView.findViewById(R.id.ivFavoriteType);
             tvNote = itemView.findViewById(R.id.tvFavoriteNote);
+            btnRemoveFavorite = itemView.findViewById(R.id.btnRemoveFavorite);
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
@@ -76,6 +79,15 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
                     listener.onFavoriteClick(favoriteList.get(position));
                 }
             });
+
+            if (btnRemoveFavorite != null) {
+                btnRemoveFavorite.setOnClickListener(v -> {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onRemoveClick(favoriteList.get(position));
+                    }
+                });
+            }
         }
 
         public void bind(Map<String, Object> favorite) {

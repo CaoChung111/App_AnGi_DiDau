@@ -53,22 +53,25 @@ public class ReviewRepository {
 
         db.collection(AppConstants.COLLECTION_REVIEWS)
                 .whereEqualTo("entityId", entityId)
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Review> reviews = new ArrayList<>();
-                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        Review review = doc.toObject(Review.class);
-                        if (review != null) {
-                            review.setId(doc.getId());
-                            reviews.add(review);
-                        }
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        Log.e(TAG, "Failed to listen for reviews for entityId: " + entityId, error);
+                        liveData.setValue(new ArrayList<>());
+                        return;
                     }
-                    liveData.setValue(reviews);
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Failed to fetch reviews for entityId: " + entityId, e);
-                    liveData.setValue(new ArrayList<>());
+                    if (querySnapshot != null) {
+                        List<Review> reviews = new ArrayList<>();
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                            Review review = doc.toObject(Review.class);
+                            if (review != null) {
+                                review.setId(doc.getId());
+                                reviews.add(review);
+                            }
+                        }
+                        // Sort locally to avoid needing Firestore Composite Index
+                        java.util.Collections.sort(reviews, (r1, r2) -> Long.compare(r2.getTimestamp(), r1.getTimestamp()));
+                        liveData.setValue(reviews);
+                    }
                 });
 
         return liveData;
@@ -113,22 +116,25 @@ public class ReviewRepository {
 
         db.collection(AppConstants.COLLECTION_REVIEWS)
                 .whereEqualTo("userId", userId)
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Review> reviews = new ArrayList<>();
-                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        Review review = doc.toObject(Review.class);
-                        if (review != null) {
-                            review.setId(doc.getId());
-                            reviews.add(review);
-                        }
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        Log.e(TAG, "Failed to listen for reviews for userId: " + userId, error);
+                        liveData.setValue(new ArrayList<>());
+                        return;
                     }
-                    liveData.setValue(reviews);
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Failed to fetch reviews for userId: " + userId, e);
-                    liveData.setValue(new ArrayList<>());
+                    if (querySnapshot != null) {
+                        List<Review> reviews = new ArrayList<>();
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                            Review review = doc.toObject(Review.class);
+                            if (review != null) {
+                                review.setId(doc.getId());
+                                reviews.add(review);
+                            }
+                        }
+                        // Sort locally to avoid needing Firestore Composite Index
+                        java.util.Collections.sort(reviews, (r1, r2) -> Long.compare(r2.getTimestamp(), r1.getTimestamp()));
+                        liveData.setValue(reviews);
+                    }
                 });
 
         return liveData;

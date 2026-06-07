@@ -86,9 +86,9 @@ public class RecommendedLocationAdapter
             tvLocationName.setText(location.getName());
             tvLocationAddress.setText(location.getAddress());
             tvLocationRating.setText(String.valueOf(location.getAverageRating()));
-            // TODO: Replace fake data with real price/distance from Firestore/GPS
-            tvLocationPrice.setText("$$$");
-            tvLocationDistance.setText("1.5km");
+            // Since we don't have real price/distance data from Firestore/GPS yet, hide these elements
+            tvLocationPrice.setVisibility(android.view.View.GONE);
+            tvLocationDistance.setVisibility(android.view.View.GONE);
 
             Glide.with(itemView.getContext())
                     .load(location.getImageUrl())

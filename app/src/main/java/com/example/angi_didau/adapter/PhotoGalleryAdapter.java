@@ -16,16 +16,23 @@ import java.util.List;
 public class PhotoGalleryAdapter extends RecyclerView.Adapter<PhotoGalleryAdapter.PhotoViewHolder> {
 
     private final List<String> imageUrls;
+    private boolean isForHero = false;
 
     public PhotoGalleryAdapter(List<String> imageUrls) {
         this.imageUrls = imageUrls;
     }
 
+    public PhotoGalleryAdapter(List<String> imageUrls, boolean isForHero) {
+        this.imageUrls = imageUrls;
+        this.isForHero = isForHero;
+    }
+
     @NonNull
     @Override
     public PhotoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        int layoutRes = isForHero ? R.layout.item_hero_photo : R.layout.item_gallery_photo;
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_gallery_photo, parent, false);
+                .inflate(layoutRes, parent, false);
         return new PhotoViewHolder(view);
     }
 

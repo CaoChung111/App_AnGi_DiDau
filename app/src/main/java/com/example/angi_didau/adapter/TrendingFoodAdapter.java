@@ -89,8 +89,8 @@ public class TrendingFoodAdapter extends ListAdapter<Food, TrendingFoodAdapter.T
             tvFoodName.setText(food.getName());
             tvFoodAddress.setText(food.getDescription());
             tvFoodRating.setText(String.valueOf(food.getAverageRating()));
-            // TODO: Replace fake distance with real calculation from user's location
-            tvFoodDistance.setText(R.string.fake_distance);
+            // Since we don't have real distance data yet, hide this element
+            tvFoodDistance.setVisibility(android.view.View.GONE);
 
             Glide.with(itemView.getContext())
                     .load(food.getImageUrl())

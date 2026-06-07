@@ -17,14 +17,20 @@ public class SavedPlansAdapter extends RecyclerView.Adapter<SavedPlansAdapter.Vi
 
     private List<SavedPlan> items;
     private OnItemClickListener listener;
+    private OnItemDeleteListener deleteListener;
 
     public interface OnItemClickListener {
         void onItemClick(SavedPlan plan);
     }
+    
+    public interface OnItemDeleteListener {
+        void onDeleteClick(SavedPlan plan);
+    }
 
-    public SavedPlansAdapter(List<SavedPlan> items, OnItemClickListener listener) {
+    public SavedPlansAdapter(List<SavedPlan> items, OnItemClickListener listener, OnItemDeleteListener deleteListener) {
         this.items = items;
         this.listener = listener;
+        this.deleteListener = deleteListener;
     }
 
     @NonNull
@@ -48,6 +54,14 @@ public class SavedPlansAdapter extends RecyclerView.Adapter<SavedPlansAdapter.Vi
                 listener.onItemClick(item);
             }
         });
+        
+        if (holder.btnDeletePlan != null) {
+            holder.btnDeletePlan.setOnClickListener(v -> {
+                if (deleteListener != null) {
+                    deleteListener.onDeleteClick(item);
+                }
+            });
+        }
     }
 
     @Override
@@ -62,12 +76,14 @@ public class SavedPlansAdapter extends RecyclerView.Adapter<SavedPlansAdapter.Vi
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvPlanTitle, tvPlanCost, tvPlanDate;
+        android.widget.ImageView btnDeletePlan;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvPlanTitle = itemView.findViewById(R.id.tvPlanTitle);
             tvPlanCost = itemView.findViewById(R.id.tvPlanCost);
             tvPlanDate = itemView.findViewById(R.id.tvPlanDate);
+            btnDeletePlan = itemView.findViewById(R.id.btnDeletePlan);
         }
     }
 }

@@ -39,9 +39,18 @@ public class SavedPlansActivity extends AppCompatActivity {
         
         rvSavedPlans.setLayoutManager(new LinearLayoutManager(this));
         adapter = new SavedPlansAdapter(new ArrayList<>(), plan -> {
-            // Can pass the JSON representation of items to DiscoverActivity if we want to show it there,
-            // or we can handle it later. For now, just show a toast.
-            android.widget.Toast.makeText(this, "Xem chi tiết: " + plan.getTitle(), android.widget.Toast.LENGTH_SHORT).show();
+            // View Details: Pass planId to DiscoverActivity
+            android.content.Intent intent = new android.content.Intent(this, com.example.angi_didau.ui.discover.DiscoverActivity.class);
+            intent.putExtra(com.example.angi_didau.common.constant.AppConstants.EXTRA_PLAN_ID, plan.getId());
+            startActivity(intent);
+        }, plan -> {
+            // Delete Plan: Show Confirmation Dialog
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Xóa kế hoạch")
+                .setMessage("Bạn có chắc chắn muốn xóa kế hoạch này không?")
+                .setPositiveButton("Xóa", (dialog, which) -> deletePlan(plan))
+                .setNegativeButton("Hủy", null)
+                .show();
         });
         rvSavedPlans.setAdapter(adapter);
 
@@ -80,6 +89,25 @@ public class SavedPlansActivity extends AppCompatActivity {
                             llEmptyState.setVisibility(View.GONE);
                         }
                     }
+                });
+    }
+
+    private void deletePlan(SavedPlan plan) {
+        String uid = FirebaseAuth.getInstance().getUid();
+        if (uid == null || plan.getId() == null) return;
+
+        FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(uid)
+                .collection("SavedPlans")
+                .document(plan.getId())
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    android.widget.Toast.makeText(this, "Đã xóa kế hoạch", android.widget.Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    android.widget.Toast.makeText(this, "Lỗi khi xóa kế hoạch", android.widget.Toast.LENGTH_SHORT).show();
+                    android.util.Log.e("SavedPlansActivity", "Error deleting plan", e);
                 });
     }
 }

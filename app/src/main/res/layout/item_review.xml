@@ -76,12 +76,23 @@
         </LinearLayout>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvEntityName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Tên địa điểm / món ăn"
+        android:textColor="@color/primary"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
     <!-- Review Text -->
     <TextView
         android:id="@+id/tvReviewContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="4dp"
         android:text="Đồ ăn rất ngon, không gian thoáng mát sạch sẽ. Nhân viên phục vụ nhiệt tình. Chắc chắn sẽ quay lại!"
         android:textColor="@color/on_surface"
         android:textSize="14sp"

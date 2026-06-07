@@ -52,6 +52,64 @@ public class DiscoverActivity extends AppCompatActivity {
         initViews();
         setupBottomNav();
         setupFormInteractions();
+
+        String planId = getIntent().getStringExtra(AppConstants.EXTRA_PLAN_ID);
+        if (planId != null && !planId.isEmpty()) {
+            loadPlanFromFirebase(planId);
+        }
+    }
+
+    private void loadPlanFromFirebase(String planId) {
+        String uid = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+        if (uid == null) return;
+        
+        llForm.setVisibility(View.GONE);
+        flLoading.setVisibility(View.VISIBLE);
+
+        FirebaseFirestore.getInstance().collection("Users").document(uid).collection("SavedPlans")
+                .document(planId).get().addOnSuccessListener(doc -> {
+                    flLoading.setVisibility(View.GONE);
+                    if (doc.exists()) {
+                        com.example.angi_didau.data.model.SavedPlan plan = doc.toObject(com.example.angi_didau.data.model.SavedPlan.class);
+                        if (plan != null) {
+                            showPlanDetails(plan);
+                        }
+                    }
+                }).addOnFailureListener(e -> {
+                    flLoading.setVisibility(View.GONE);
+                    llForm.setVisibility(View.VISIBLE);
+                    android.widget.Toast.makeText(this, "Không thể tải kế hoạch", android.widget.Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void showPlanDetails(com.example.angi_didau.data.model.SavedPlan plan) {
+        llResult.setVisibility(View.VISIBLE);
+        
+        TextView tvAiResultTotalCost = findViewById(R.id.tvAiResultTotalCost);
+        if (tvAiResultTotalCost != null) tvAiResultTotalCost.setText("Dự kiến: " + plan.getTotalCost());
+        
+        RecyclerView rvTimeline = findViewById(R.id.rvTimeline);
+        if (rvTimeline != null) {
+            rvTimeline.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+            rvTimeline.setAdapter(new TimelineAdapter(plan.getItems()));
+        }
+
+        Button btnSavePlan = findViewById(R.id.btnSavePlan);
+        if (btnSavePlan != null) {
+            btnSavePlan.setText("Đã lưu");
+            btnSavePlan.setEnabled(false);
+            btnSavePlan.setBackgroundResource(R.drawable.bg_button_disabled);
+        }
+
+        Button btnRegenerate = findViewById(R.id.btnRegenerate);
+        if (btnRegenerate != null) {
+            btnRegenerate.setVisibility(View.GONE);
+        }
+
+        Button btnEditPlan = findViewById(R.id.btnEditPlan);
+        if (btnEditPlan != null) {
+            btnEditPlan.setVisibility(View.GONE);
+        }
     }
 
     private void initViews() {

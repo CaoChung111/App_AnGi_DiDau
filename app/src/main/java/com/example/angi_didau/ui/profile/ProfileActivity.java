@@ -53,7 +53,6 @@ public class ProfileActivity extends AppCompatActivity {
         
         TextView tvStatPlaces = findViewById(R.id.tvStatPlaces);
         TextView tvStatFoods = findViewById(R.id.tvStatFoods);
-        TextView tvStatSaved = findViewById(R.id.tvStatSaved);
 
         viewModel.getCurrentUser().observe(this, user -> {
             if (user != null) {
@@ -94,9 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (tvStatFoods != null) tvStatFoods.setText(String.valueOf(count));
         });
         
-        viewModel.getSavedPlansCount().observe(this, count -> {
-            if (tvStatSaved != null) tvStatSaved.setText(String.valueOf(count));
-        });
+
 
         viewModel.getLogoutResult().observe(this, shouldLogout -> {
             if (Boolean.TRUE.equals(shouldLogout)) {

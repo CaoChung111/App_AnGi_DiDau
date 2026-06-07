@@ -66,6 +66,34 @@ public class LocationDetailViewModel extends ViewModel {
         return reviews;
     }
 
+    private LiveData<Boolean> isFavorite;
+
+    public LiveData<Boolean> getIsFavorite(String locationId) {
+        if (isFavorite == null) {
+            com.google.firebase.auth.FirebaseUser user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null && locationId != null) {
+                isFavorite = com.example.angi_didau.data.repository.FavoritesRepository.getInstance().isFavorite(user.getUid(), locationId);
+            } else {
+                MutableLiveData<Boolean> empty = new MutableLiveData<>(false);
+                isFavorite = empty;
+            }
+        }
+        return isFavorite;
+    }
+
+    public void toggleFavorite(Location location) {
+        com.google.firebase.auth.FirebaseUser user = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null && location != null) {
+            Boolean currentStatus = isFavorite != null ? isFavorite.getValue() : false;
+            if (Boolean.TRUE.equals(currentStatus)) {
+                com.example.angi_didau.data.repository.FavoritesRepository.getInstance().removeFavorite(user.getUid(), location.getId());
+            } else {
+                com.example.angi_didau.data.repository.FavoritesRepository.getInstance().addFavorite(
+                        user.getUid(), location.getId(), "location", location.getName(), location.getImageUrl(), "");
+            }
+        }
+    }
+
     public void onDataLoaded() {
         isLoading.setValue(false);
     }

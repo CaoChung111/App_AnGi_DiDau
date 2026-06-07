@@ -55,21 +55,23 @@ public class FavoritesRepository {
         db.collection(AppConstants.COLLECTION_FAVORITES)
                 .document(userId)
                 .collection(SUB_COLLECTION_ITEMS)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Map<String, Object>> items = new ArrayList<>();
-                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        Map<String, Object> item = doc.getData();
-                        if (item != null) {
-                            item.put("docId", doc.getId());
-                            items.add(item);
-                        }
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        Log.e(TAG, "Failed to listen for favorites for userId: " + userId, error);
+                        liveData.setValue(new ArrayList<>());
+                        return;
                     }
-                    liveData.setValue(items);
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Failed to fetch favorites for userId: " + userId, e);
-                    liveData.setValue(new ArrayList<>());
+                    if (querySnapshot != null) {
+                        List<Map<String, Object>> items = new ArrayList<>();
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                            Map<String, Object> item = doc.getData();
+                            if (item != null) {
+                                item.put("docId", doc.getId());
+                                items.add(item);
+                            }
+                        }
+                        liveData.setValue(items);
+                    }
                 });
 
         return liveData;
@@ -156,9 +158,13 @@ public class FavoritesRepository {
                 .document(userId)
                 .collection(SUB_COLLECTION_ITEMS)
                 .document(entityId)
-                .get()
-                .addOnSuccessListener(doc -> result.setValue(doc.exists()))
-                .addOnFailureListener(e -> result.setValue(false));
+                .addSnapshotListener((doc, error) -> {
+                    if (error != null) {
+                        result.setValue(false);
+                        return;
+                    }
+                    result.setValue(doc != null && doc.exists());
+                });
 
         return result;
     }

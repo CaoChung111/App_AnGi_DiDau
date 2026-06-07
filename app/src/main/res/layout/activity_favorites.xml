@@ -18,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="Ghi chú ẩm thực"
+            app:title="Yêu thích"
             app:titleTextColor="@color/on_surface"
             app:titleCentered="true">
         </androidx.appcompat.widget.Toolbar>
@@ -37,65 +37,9 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Banner / Nút Thêm mới -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="@color/primary_fixed"
-                app:cardElevation="0dp">
-                
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-                    
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_edit"
-                        app:tint="@color/primary_container"
-                        android:layout_marginBottom="12dp"/>
-                        
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Lưu lại trải nghiệm"
-                        android:textColor="@color/on_surface"
-                        android:textStyle="bold"
-                        android:textSize="18sp"/>
-                        
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Note lại quán ngon để không bao giờ quên concept ăn uống của bạn."
-                        android:textColor="@color/secondary"
-                        android:layout_marginTop="4dp"
-                        android:textSize="14sp"/>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAddNote"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="Thêm món ăn / địa điểm"
-                        android:textAllCaps="false"
-                        app:cornerRadius="8dp"
-                        app:icon="@drawable/ic_plus"
-                        android:backgroundTint="@color/primary_container"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Danh sách của tôi"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@color/on_surface"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"/>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvFavorites"

@@ -62,6 +62,7 @@ public class ReviewAdapter extends ListAdapter<Review, ReviewAdapter.ReviewViewH
         private final TextView   tvContent;
         private final TextView   tvDate;
         private final TextView   tvRating;
+        private final TextView   tvEntityName;
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,11 +70,15 @@ public class ReviewAdapter extends ListAdapter<Review, ReviewAdapter.ReviewViewH
             tvContent  = itemView.findViewById(R.id.tvReviewContent);
             tvDate     = itemView.findViewById(R.id.tvReviewDate);
             tvRating   = itemView.findViewById(R.id.tvReviewRating);
+            tvEntityName = itemView.findViewById(R.id.tvEntityName);
         }
 
         public void bind(Review review) {
-            // Use userId as placeholder — in production, resolve to display name via UserRepository
-            tvUserName.setText(review.getUserId() != null ? "Người dùng" : "Ẩn danh");
+            String displayName = review.getUserName() != null && !review.getUserName().isEmpty()
+                    ? review.getUserName()
+                    : (review.getUserId() != null ? "Người dùng" : "Ẩn danh");
+            tvUserName.setText(displayName);
+            
             tvContent.setText(review.getContent());
             if (tvRating != null) tvRating.setText(String.valueOf(review.getRating()));
 
@@ -83,6 +88,15 @@ public class ReviewAdapter extends ListAdapter<Review, ReviewAdapter.ReviewViewH
                 tvDate.setText(sdf.format(new Date(review.getTimestamp())));
             } else {
                 tvDate.setText("");
+            }
+            
+            if (tvEntityName != null) {
+                if (review.getEntityName() != null && !review.getEntityName().isEmpty()) {
+                    tvEntityName.setText(review.getEntityName());
+                    tvEntityName.setVisibility(View.VISIBLE);
+                } else {
+                    tvEntityName.setVisibility(View.GONE);
+                }
             }
         }
     }

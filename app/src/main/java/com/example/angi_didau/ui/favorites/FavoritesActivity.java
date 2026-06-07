@@ -39,29 +39,41 @@ public class FavoritesActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
 
         setupBottomNav();
-        setupAddNoteButton();
         setupRecyclerView();
         observeViewModel();
     }
 
     private void setupRecyclerView() {
         RecyclerView rvFavorites = findViewById(R.id.rvFavorites);
-        adapter = new FavoriteAdapter(favorite -> {
-            // Future feature: View favorite detail
+        adapter = new FavoriteAdapter(new FavoriteAdapter.OnFavoriteClickListener() {
+            @Override
+            public void onFavoriteClick(java.util.Map<String, Object> favorite) {
+                String type = (String) favorite.get("type");
+                String id = (String) favorite.get("entityId");
+                if (com.example.angi_didau.common.constant.AppConstants.ENTITY_TYPE_FOOD.equals(type)) {
+                    Intent intent = new Intent(FavoritesActivity.this, com.example.angi_didau.ui.food.FoodDetailActivity.class);
+                    intent.putExtra(com.example.angi_didau.common.constant.AppConstants.EXTRA_FOOD_ID, id);
+                    startActivity(intent);
+                } else if (com.example.angi_didau.common.constant.AppConstants.ENTITY_TYPE_LOCATION.equals(type)) {
+                    Intent intent = new Intent(FavoritesActivity.this, com.example.angi_didau.ui.location.LocationDetailActivity.class);
+                    intent.putExtra(com.example.angi_didau.common.constant.AppConstants.EXTRA_LOCATION_ID, id);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onRemoveClick(java.util.Map<String, Object> favorite) {
+                String id = (String) favorite.get("entityId");
+                if (id != null) {
+                    viewModel.removeFavorite(id);
+                }
+            }
         });
         rvFavorites.setLayoutManager(new LinearLayoutManager(this));
         rvFavorites.setAdapter(adapter);
     }
 
-    private void setupAddNoteButton() {
-        View btnAddNote = findViewById(R.id.btnAddNote);
-        if (btnAddNote != null) {
-            btnAddNote.setOnClickListener(v -> {
-                AddNoteBottomSheet bottomSheet = AddNoteBottomSheet.newInstance();
-                bottomSheet.show(getSupportFragmentManager(), "AddNoteBottomSheet");
-            });
-        }
-    }
+
 
     private void observeViewModel() {
         // Observe loading state

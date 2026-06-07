@@ -19,11 +19,27 @@ public class UserReviewsActivity extends AppCompatActivity {
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> finish());
         }
-        
-        // TODO: Initialize RecyclerView and Adapter when we have a database of User Reviews
-        View rvUserReviews = findViewById(R.id.rvUserReviews);
+        // Setup RecyclerView
+        androidx.recyclerview.widget.RecyclerView rvUserReviews = findViewById(R.id.rvUserReviews);
+        com.example.angi_didau.adapter.ReviewAdapter adapter = new com.example.angi_didau.adapter.ReviewAdapter();
         if (rvUserReviews != null) {
-            rvUserReviews.setVisibility(View.GONE); // Hide list since we show empty state by default
+            rvUserReviews.setAdapter(adapter);
         }
+        
+        View llEmptyState = findViewById(R.id.llEmptyState);
+
+        // Fetch data
+        UserReviewsViewModel viewModel = new androidx.lifecycle.ViewModelProvider(this).get(UserReviewsViewModel.class);
+        viewModel.getUserReviews().observe(this, reviews -> {
+            if (reviews != null && !reviews.isEmpty()) {
+                adapter.submitList(reviews);
+                if (rvUserReviews != null) rvUserReviews.setVisibility(View.VISIBLE);
+                if (llEmptyState != null) llEmptyState.setVisibility(View.GONE);
+            } else {
+                adapter.submitList(new java.util.ArrayList<>());
+                if (rvUserReviews != null) rvUserReviews.setVisibility(View.GONE);
+                if (llEmptyState != null) llEmptyState.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

@@ -32,7 +32,8 @@ public class FoodDetailActivity extends AppCompatActivity {
 
     private FoodDetailViewModel viewModel;
     private ReviewAdapter reviewAdapter;
-    private com.example.angi_didau.adapter.NearbyPlaceAdapter nearbyPlaceAdapter;
+    private com.example.angi_didau.adapter.TrendingFoodAdapter trendingFoodAdapter;
+    private String currentFoodName = "";
 
     // Views
     private ImageView ivFoodImage;
@@ -56,6 +57,7 @@ public class FoodDetailActivity extends AppCompatActivity {
 
         bindViews();
         setupNearbyRestaurants();
+        setupReviews();
         observeViewModel(foodId);
     }
 
@@ -72,33 +74,42 @@ public class FoodDetailActivity extends AppCompatActivity {
             ivBack.setOnClickListener(v -> finish());
         }
 
-        // Action Buttons
-        View btnFavorite = findViewById(R.id.btnFavorite);
-        if (btnFavorite != null) {
-            btnFavorite.setOnClickListener(v -> 
-                android.widget.Toast.makeText(this, "Đã thêm vào yêu thích", android.widget.Toast.LENGTH_SHORT).show());
-        }
-
-        View llSaveAction = findViewById(R.id.llSaveAction);
-        if (llSaveAction != null) {
-            llSaveAction.setOnClickListener(v -> 
-                android.widget.Toast.makeText(this, "Đã lưu", android.widget.Toast.LENGTH_SHORT).show());
-        }
-
-        View tvSeeAllNearby = findViewById(R.id.tvSeeAllNearby);
-        if (tvSeeAllNearby != null) {
-            tvSeeAllNearby.setOnClickListener(v -> 
-                android.widget.Toast.makeText(this, "Đang tải thêm danh sách", android.widget.Toast.LENGTH_SHORT).show());
-        }
-
     }
 
     private void setupNearbyRestaurants() {
-        RecyclerView rvNearby = findViewById(R.id.rvNearbyRestaurants);
+        RecyclerView rvNearby = findViewById(R.id.rvRelatedFoods);
         if (rvNearby != null) {
             rvNearby.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            nearbyPlaceAdapter = new com.example.angi_didau.adapter.NearbyPlaceAdapter(new java.util.ArrayList<>());
-            rvNearby.setAdapter(nearbyPlaceAdapter);
+            trendingFoodAdapter = new com.example.angi_didau.adapter.TrendingFoodAdapter();
+            trendingFoodAdapter.setOnItemClickListener(food -> {
+                android.content.Intent intent = new android.content.Intent(this, FoodDetailActivity.class);
+                intent.putExtra(AppConstants.EXTRA_FOOD_ID, food.getId());
+                startActivity(intent);
+            });
+            rvNearby.setAdapter(trendingFoodAdapter);
+        }
+    }
+
+    private void setupReviews() {
+        RecyclerView rvReviews = findViewById(R.id.rvReviews);
+        if (rvReviews != null) {
+            rvReviews.setLayoutManager(new LinearLayoutManager(this));
+            reviewAdapter = new ReviewAdapter();
+            rvReviews.setAdapter(reviewAdapter);
+        }
+
+
+        
+        View btnAddReview = findViewById(R.id.btnAddReview);
+        if (btnAddReview != null) {
+            btnAddReview.setOnClickListener(v -> {
+                String foodId = getIntent().getStringExtra(AppConstants.EXTRA_FOOD_ID);
+                if (foodId != null) {
+                    com.example.angi_didau.ui.location.fragment.AddReviewBottomSheet bottomSheet = 
+                            com.example.angi_didau.ui.location.fragment.AddReviewBottomSheet.newInstance(foodId, currentFoodName);
+                    bottomSheet.show(getSupportFragmentManager(), "AddReviewBottomSheet");
+                }
+            });
         }
     }
 
@@ -114,7 +125,10 @@ public class FoodDetailActivity extends AppCompatActivity {
             if (food == null) return;
 
             // Bind food data to views
-            if (tvFoodName != null) tvFoodName.setText(food.getName());
+            if (tvFoodName != null) {
+                tvFoodName.setText(food.getName());
+                currentFoodName = food.getName();
+            }
             if (tvFoodDescription != null) tvFoodDescription.setText(food.getDescription());
             if (tvFoodPrice != null) tvFoodPrice.setText(
                     String.format("%,d đ", (long) food.getPrice()));
@@ -138,19 +152,10 @@ public class FoodDetailActivity extends AppCompatActivity {
                 });
             }
 
-            View llFindNearbyAction = findViewById(R.id.llFindNearbyAction);
-            if (llFindNearbyAction != null) {
-                llFindNearbyAction.setOnClickListener(v -> {
-                    android.net.Uri gmmIntentUri = android.net.Uri.parse("geo:0,0?q=quán " + food.getName());
-                    android.content.Intent mapIntent = new android.content.Intent(android.content.Intent.ACTION_VIEW, gmmIntentUri);
-                    mapIntent.setPackage("com.google.android.apps.maps");
-                    if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(mapIntent);
-                    } else {
-                        // Fallback to browser if Maps app is not installed
-                        startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW, 
-                                android.net.Uri.parse("https://www.google.com/maps/search/?api=1&query=" + android.net.Uri.encode("quán " + food.getName()))));
-                    }
+            View btnFavorite = findViewById(R.id.btnFavorite);
+            if (btnFavorite != null) {
+                btnFavorite.setOnClickListener(v -> {
+                    viewModel.toggleFavorite(food);
                 });
             }
 
@@ -171,15 +176,48 @@ public class FoodDetailActivity extends AppCompatActivity {
         });
 
         viewModel.getReviews(foodId).observe(this, reviews -> {
-            // Reviews RecyclerView is omitted in this layout
+            if (reviewAdapter != null) {
+                reviewAdapter.submitList(reviews);
+            }
+            int count = reviews != null ? reviews.size() : 0;
+            TextView tvTotalReviews = findViewById(R.id.tvTotalReviews);
+            if (tvTotalReviews != null) {
+                tvTotalReviews.setText(count + " đánh giá");
+            }
+            
+            // Recalculate average rating locally
+            if (count > 0) {
+                float sum = 0;
+                for (com.example.angi_didau.data.model.Review review : reviews) {
+                    sum += review.getRating();
+                }
+                float avg = sum / count;
+                
+                if (tvRatingValue != null) {
+                    tvRatingValue.setText(String.format(java.util.Locale.US, "%.1f", avg));
+                }
+                
+                // Save to DB
+                com.example.angi_didau.data.repository.FoodRepository.getInstance().updateAverageRating(foodId, avg);
+            }
         });
 
-        viewModel.getNearbyLocations().observe(this, locations -> {
-            if (nearbyPlaceAdapter != null && locations != null) {
-                // Submit list to nearby adapter (NearbyPlaceAdapter doesn't have submitList, we may need to recreate or add a method. Wait, does it have submitList?)
-                // Actually NearbyPlaceAdapter currently takes List in constructor. Let's create a setLocations method.
-                nearbyPlaceAdapter.setLocations(locations);
-                nearbyPlaceAdapter.notifyDataSetChanged();
+        viewModel.getIsFavorite(foodId).observe(this, isFavorite -> {
+            ImageView btnFavorite = findViewById(R.id.btnFavorite);
+            if (btnFavorite != null) {
+                if (Boolean.TRUE.equals(isFavorite)) {
+                    btnFavorite.setImageResource(R.drawable.ic_favorite);
+                    btnFavorite.setColorFilter(androidx.core.content.ContextCompat.getColor(this, R.color.primary));
+                } else {
+                    btnFavorite.setImageResource(R.drawable.ic_favorite_border);
+                    btnFavorite.setColorFilter(androidx.core.content.ContextCompat.getColor(this, R.color.on_surface));
+                }
+            }
+        });
+
+        viewModel.getRelatedFoods().observe(this, foods -> {
+            if (trendingFoodAdapter != null && foods != null) {
+                trendingFoodAdapter.submitList(foods);
             }
         });
     }
