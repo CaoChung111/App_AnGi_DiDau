@@ -41,6 +41,13 @@ public class FavoritesActivity extends AppCompatActivity {
         setupBottomNav();
         setupRecyclerView();
         observeViewModel();
+
+        com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton fabAddCustomNote = findViewById(R.id.fabAddCustomNote);
+        if (fabAddCustomNote != null) {
+            fabAddCustomNote.setOnClickListener(v -> {
+                CustomNoteBottomSheet.newInstance().show(getSupportFragmentManager(), "CustomNoteBottomSheet");
+            });
+        }
     }
 
     private void setupRecyclerView() {
@@ -48,6 +55,12 @@ public class FavoritesActivity extends AppCompatActivity {
         adapter = new FavoriteAdapter(new FavoriteAdapter.OnFavoriteClickListener() {
             @Override
             public void onFavoriteClick(java.util.Map<String, Object> favorite) {
+                Boolean isCustom = (Boolean) favorite.get("isCustom");
+                if (Boolean.TRUE.equals(isCustom)) {
+                    Toast.makeText(FavoritesActivity.this, "Đây là ghi chú cá nhân", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 String type = (String) favorite.get("type");
                 String id = (String) favorite.get("entityId");
                 if (com.example.angi_didau.common.constant.AppConstants.ENTITY_TYPE_FOOD.equals(type)) {
@@ -65,6 +78,17 @@ public class FavoritesActivity extends AppCompatActivity {
             public void onRemoveClick(java.util.Map<String, Object> favorite) {
                 String id = (String) favorite.get("entityId");
                 if (id != null) {
+                    String imageUrl = (String) favorite.get("imageUrl");
+                    if (imageUrl != null && !imageUrl.startsWith("http") && !imageUrl.isEmpty()) {
+                        try {
+                            java.io.File file = new java.io.File(imageUrl);
+                            if (file.exists()) {
+                                file.delete();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     viewModel.removeFavorite(id);
                 }
             }
@@ -85,6 +109,16 @@ public class FavoritesActivity extends AppCompatActivity {
         viewModel.getFavorites().observe(this, favorites -> {
             viewModel.onDataLoaded();
             adapter.submitList(favorites);
+
+            View layoutEmptyState = findViewById(R.id.layoutEmptyState);
+            RecyclerView rvFavorites = findViewById(R.id.rvFavorites);
+            if (favorites == null || favorites.isEmpty()) {
+                if (layoutEmptyState != null) layoutEmptyState.setVisibility(View.VISIBLE);
+                if (rvFavorites != null) rvFavorites.setVisibility(View.GONE);
+            } else {
+                if (layoutEmptyState != null) layoutEmptyState.setVisibility(View.GONE);
+                if (rvFavorites != null) rvFavorites.setVisibility(View.VISIBLE);
+            }
         });
 
         // Observe save note result

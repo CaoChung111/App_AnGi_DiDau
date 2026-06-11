@@ -84,7 +84,7 @@ public class SearchActivity extends AppCompatActivity {
         if (rvResults == null) return;
 
         adapter = new SearchResultAdapter();
-        rvResults.setLayoutManager(new LinearLayoutManager(this));
+        rvResults.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(this, 2));
         rvResults.setAdapter(adapter);
 
         // Food click → FoodDetailActivity
@@ -113,6 +113,18 @@ public class SearchActivity extends AppCompatActivity {
         viewModel.getLocationResults().observe(this, locations -> {
             if (adapter != null) {
                 adapter.submitResults(viewModel.getFoodResults().getValue(), locations);
+            }
+        });
+
+        viewModel.getIsEmpty().observe(this, isEmpty -> {
+            View layoutEmptyState = findViewById(R.id.layoutEmptyState);
+            RecyclerView rvSearchResults = findViewById(R.id.rvSearchResults);
+            if (isEmpty) {
+                if (layoutEmptyState != null) layoutEmptyState.setVisibility(View.VISIBLE);
+                if (rvSearchResults != null) rvSearchResults.setVisibility(View.GONE);
+            } else {
+                if (layoutEmptyState != null) layoutEmptyState.setVisibility(View.GONE);
+                if (rvSearchResults != null) rvSearchResults.setVisibility(View.VISIBLE);
             }
         });
     }

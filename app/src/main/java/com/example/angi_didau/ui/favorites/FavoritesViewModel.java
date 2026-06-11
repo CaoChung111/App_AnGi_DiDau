@@ -75,7 +75,26 @@ public class FavoritesViewModel extends ViewModel {
             return;
         }
 
-        favoritesRepository.addFavorite(userId, entityId, type, name, imageUrl, note)
+        favoritesRepository.addFavorite(userId, entityId, type, name, imageUrl, note, false)
+                .observeForever(success -> saveNoteResult.setValue(success));
+    }
+
+    /**
+     * Adds a custom personal note (not tied to an existing database entity).
+     */
+    public void addCustomNote(String type, String name, String note, String imageUrl) {
+        String userId = getCurrentUserId();
+        if (userId == null) {
+            saveNoteResult.setValue(false);
+            return;
+        }
+
+        String customId = java.util.UUID.randomUUID().toString();
+        if (imageUrl == null) {
+            imageUrl = "";
+        }
+
+        favoritesRepository.addFavorite(userId, customId, type, name, imageUrl, note, true)
                 .observeForever(success -> saveNoteResult.setValue(success));
     }
 

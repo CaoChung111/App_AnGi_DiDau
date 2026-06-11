@@ -63,6 +63,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
         private final TextView tvName;
         private final ImageView ivType;
         private final TextView tvNote;
+        private final TextView tvCustomTag;
         private final ImageView btnRemoveFavorite;
 
         public FavoriteViewHolder(@NonNull View itemView) {
@@ -71,6 +72,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             tvName = itemView.findViewById(R.id.tvFavoriteName);
             ivType = itemView.findViewById(R.id.ivFavoriteType);
             tvNote = itemView.findViewById(R.id.tvFavoriteNote);
+            tvCustomTag = itemView.findViewById(R.id.tvCustomTag);
             btnRemoveFavorite = itemView.findViewById(R.id.btnRemoveFavorite);
 
             itemView.setOnClickListener(v -> {
@@ -95,6 +97,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             String note = (String) favorite.get("note");
             String type = (String) favorite.get("type");
             String imageUrl = (String) favorite.get("imageUrl");
+            Boolean isCustom = (Boolean) favorite.get("isCustom");
 
             tvName.setText(name != null ? name : "Chưa có tên");
             
@@ -105,20 +108,28 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
                 tvNote.setVisibility(View.GONE);
             }
 
+            if (Boolean.TRUE.equals(isCustom)) {
+                if (tvCustomTag != null) tvCustomTag.setVisibility(View.VISIBLE);
+            } else {
+                if (tvCustomTag != null) tvCustomTag.setVisibility(View.GONE);
+            }
+
             if (AppConstants.ENTITY_TYPE_FOOD.equals(type)) {
                 ivType.setImageResource(R.drawable.ic_restaurant_menu);
             } else {
                 ivType.setImageResource(R.drawable.ic_location_on);
             }
 
+            int placeholderIcon = AppConstants.ENTITY_TYPE_FOOD.equals(type) ? R.drawable.ic_restaurant_menu : R.drawable.ic_location_on;
+
             if (imageUrl != null && !imageUrl.trim().isEmpty()) {
                 Glide.with(itemView.getContext())
                         .load(imageUrl)
-                        .placeholder(R.drawable.ic_restaurant_menu)
+                        .placeholder(placeholderIcon)
                         .centerCrop()
                         .into(ivImage);
             } else {
-                ivImage.setImageResource(R.drawable.ic_restaurant_menu);
+                ivImage.setImageResource(placeholderIcon);
             }
         }
     }

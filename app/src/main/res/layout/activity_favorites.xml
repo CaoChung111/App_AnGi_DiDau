@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Yêu thích"
-            app:titleTextColor="@color/on_surface"
+            app:titleTextColor="@color/primary_container"
             app:titleCentered="true">
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -51,10 +51,48 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_favorite"/>
 
+            <!-- Empty State -->
+            <LinearLayout
+                android:id="@+id/layoutEmptyState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="64dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_favorite_border"
+                    app:tint="@color/secondary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Chưa có món ăn hay địa điểm nào được yêu thích."
+                    android:textColor="@color/secondary"
+                    android:textSize="14sp"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Nav -->
     <include layout="@layout/layout_bottom_nav" />
+
+    <!-- Extended FAB for custom notes -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabAddCustomNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="100dp"
+        android:text="Thêm ghi chú"
+        app:backgroundTint="@color/primary"
+        android:textColor="@color/white"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

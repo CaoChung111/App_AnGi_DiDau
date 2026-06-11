@@ -105,7 +105,7 @@ public class FoodDetailViewModel extends ViewModel {
                 com.example.angi_didau.data.repository.FavoritesRepository.getInstance().removeFavorite(user.getUid(), food.getId());
             } else {
                 com.example.angi_didau.data.repository.FavoritesRepository.getInstance().addFavorite(
-                        user.getUid(), food.getId(), "food", food.getName(), food.getImageUrl(), "");
+                        user.getUid(), food.getId(), "food", food.getName(), food.getImageUrl(), "", false);
             }
         }
     }

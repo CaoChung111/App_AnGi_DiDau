@@ -54,6 +54,10 @@ public class SpinWheelView extends View {
 
     public void setItems(List<String> items) {
         this.items = items;
+        if (items != null && items.size() > 0) {
+            float size = Math.max(12f, 34f * (8f / items.size()));
+            textPaint.setTextSize(size);
+        }
         invalidate();
     }
 

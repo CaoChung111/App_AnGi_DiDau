@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Lên kế hoạch AI"
-            app:titleTextColor="@color/on_surface"
+            app:titleTextColor="@color/primary_container"
             app:titleCentered="true">
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -490,13 +490,13 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- Action Buttons: Sửa, Lưu, Đổi ngày -->
+                <!-- Action Buttons: Sửa, Lưu -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="16dp"
-                    android:weightSum="3">
+                    android:weightSum="2">
                     
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnEditPlan"
@@ -519,27 +519,12 @@
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:layout_weight="1"
-                        android:layout_marginHorizontal="6dp"
+                        android:layout_marginStart="6dp"
                         android:text="Lưu"
                         android:textAllCaps="false"
                         android:textColor="@color/on_surface"
                         android:backgroundTint="@color/surface_container_low"
                         app:icon="@drawable/ic_bookmark"
-                        app:iconGravity="textStart"
-                        app:iconTint="@color/on_surface"
-                        app:cornerRadius="8dp"
-                        android:paddingHorizontal="0dp"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:text="Đổi ngày"
-                        android:textAllCaps="false"
-                        android:textColor="@color/on_surface"
-                        android:backgroundTint="@color/surface_container_low"
-                        app:icon="@drawable/ic_calendar"
                         app:iconGravity="textStart"
                         app:iconTint="@color/on_surface"
                         app:cornerRadius="8dp"

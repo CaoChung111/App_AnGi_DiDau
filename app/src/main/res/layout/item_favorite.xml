@@ -55,19 +55,36 @@
                     
                 <ImageView
                     android:id="@+id/ivFavoriteType"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_restaurant_menu"
-                    app:tint="@color/secondary"/>
+                    app:tint="@color/secondary"
+                    android:layout_marginTop="4dp"/>
+
+                <!-- Tag cho Ghi chú cá nhân -->
+                <TextView
+                    android:id="@+id/tvCustomTag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ghi chú cá nhân"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/shape_pill"
+                    android:backgroundTint="@color/primary_container"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone"
+                    android:fontFamily="sans-serif-medium"/>
 
                 <ImageView
                     android:id="@+id/btnRemoveFavorite"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_favorite"
-                    app:tint="@color/primary"/>
+                    android:src="@android:drawable/ic_menu_delete"
+                    app:tint="@color/error"/>
             </LinearLayout>
             
             <TextView

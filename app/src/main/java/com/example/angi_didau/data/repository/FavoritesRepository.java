@@ -89,7 +89,7 @@ public class FavoritesRepository {
      * @param note     Optional user note about this favorite
      * @return LiveData emitting true on success, false on failure
      */
-    public LiveData<Boolean> addFavorite(String userId, String entityId, String type, String name, String imageUrl, String note) {
+    public LiveData<Boolean> addFavorite(String userId, String entityId, String type, String name, String imageUrl, String note, boolean isCustom) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
 
         Map<String, Object> favoriteData = new HashMap<>();
@@ -99,6 +99,7 @@ public class FavoritesRepository {
         favoriteData.put("imageUrl",   imageUrl != null ? imageUrl : "");
         favoriteData.put("note",       note != null ? note : "");
         favoriteData.put("savedAt",    System.currentTimeMillis());
+        favoriteData.put("isCustom",   isCustom);
 
         db.collection(AppConstants.COLLECTION_FAVORITES)
                 .document(userId)

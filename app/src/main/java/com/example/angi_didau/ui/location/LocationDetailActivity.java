@@ -142,6 +142,35 @@ public class LocationDetailActivity extends AppCompatActivity {
             if (rbAverageRating != null) {
                 rbAverageRating.setRating((float) location.getAverageRating());
             }
+
+            // Setup Navigation Buttons
+            android.view.View.OnClickListener navListener = v -> {
+                double lat = location.getLatitude();
+                double lng = location.getLongitude();
+                
+                // Fallback nếu Firebase không có tọa độ (mặc định là 0.0)
+                if (lat == 0.0 && lng == 0.0) {
+                    lat = 21.05398129592764;
+                    lng = 105.7349780492407;
+                }
+                
+                String uri = "google.navigation:q=" + lat + "," + lng;
+                android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(uri));
+                intent.setPackage("com.google.android.apps.maps");
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    android.widget.Toast.makeText(this, "Bạn chưa cài đặt Google Maps!", android.widget.Toast.LENGTH_SHORT).show();
+                }
+            };
+
+            android.widget.Button btnNavigateTop = findViewById(R.id.btnNavigateTop);
+            if (btnNavigateTop != null) {
+                btnNavigateTop.setOnClickListener(navListener);
+            }
+
+
         });
 
         viewModel.getReviews().observe(this, reviews -> {

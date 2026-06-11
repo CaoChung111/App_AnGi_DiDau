@@ -5,20 +5,27 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.angi_didau.data.model.Food;
 import com.example.angi_didau.data.repository.FoodRepository;
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * ViewModel for {@link FoodListActivity}.
  * <p>
- * Fetches the complete food list from Firestore. Survives rotation — only one
- * Firestore read is triggered per ViewModel lifecycle.
+ * Fetches food list from Firestore using infinite scroll pagination.
  */
 public class FoodListViewModel extends ViewModel {
 
     private final FoodRepository foodRepository;
 
-    private LiveData<List<Food>> foods;
-    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(true);
+    private final MutableLiveData<List<Food>> foods = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+
+    private DocumentSnapshot lastVisible = null;
+    private boolean isLastPage = false;
+    private boolean isFetching = false;
+    private static final int PAGE_SIZE = 50;
 
     public FoodListViewModel() {
         foodRepository = FoodRepository.getInstance();
@@ -26,25 +33,58 @@ public class FoodListViewModel extends ViewModel {
 
     public LiveData<Boolean> getIsLoading() { return isLoading; }
 
-    /**
-     * Returns LiveData for all foods. Firestore is queried only on the first call.
-     */
     public LiveData<List<Food>> getFoods() {
-        if (foods == null) {
-            foods = foodRepository.getAllFoods();
+        if (foods.getValue() == null || foods.getValue().isEmpty()) {
+            loadNextPage();
         }
         return foods;
     }
 
-    /**
-     * Forces a fresh fetch from Firestore. Call on pull-to-refresh.
-     */
-    public void refresh() {
+    public boolean isFetching() { return isFetching; }
+    public boolean isLastPage() { return isLastPage; }
+
+    public void loadNextPage() {
+        if (isLastPage || isFetching) return;
+        isFetching = true;
         isLoading.setValue(true);
-        foods = foodRepository.getAllFoods();
+
+        foodRepository.getFoodsPage(lastVisible, PAGE_SIZE, task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                List<Food> newFoods = new ArrayList<>();
+                for (DocumentSnapshot doc : task.getResult()) {
+                    Food food = doc.toObject(Food.class);
+                    if (food != null) {
+                        food.setId(doc.getId());
+                        newFoods.add(food);
+                    }
+                }
+
+                List<Food> current = foods.getValue();
+                if (current == null) current = new ArrayList<>();
+                current.addAll(newFoods);
+                foods.setValue(current);
+
+                if (task.getResult().size() < PAGE_SIZE) {
+                    isLastPage = true;
+                } else {
+                    int lastIndex = task.getResult().size() - 1;
+                    lastVisible = task.getResult().getDocuments().get(lastIndex);
+                }
+            }
+            isFetching = false;
+            isLoading.setValue(false);
+        });
+    }
+
+    public void refresh() {
+        lastVisible = null;
+        isLastPage = false;
+        isFetching = false;
+        foods.setValue(new ArrayList<>());
+        loadNextPage();
     }
 
     public void onDataLoaded() {
-        isLoading.setValue(false);
+        // No-op or keep for compatibility
     }
 }

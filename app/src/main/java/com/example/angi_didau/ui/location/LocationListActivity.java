@@ -63,6 +63,19 @@ public class LocationListActivity extends AppCompatActivity {
             intent.putExtra(AppConstants.EXTRA_LOCATION_ID, item.getId());
             startActivity(intent);
         });
+
+        // Infinite Scroll via NestedScrollView
+        androidx.core.widget.NestedScrollView nestedScrollView = findViewById(R.id.nestedScrollView);
+        if (nestedScrollView != null) {
+            nestedScrollView.setOnScrollChangeListener((androidx.core.widget.NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                // Check if we scrolled to the bottom
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                    if (!viewModel.isFetching() && !viewModel.isLastPage()) {
+                        viewModel.loadNextPage();
+                    }
+                }
+            });
+        }
     }
 
     private void observeViewModel() {

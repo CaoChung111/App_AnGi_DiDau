@@ -11,6 +11,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * Repository for {@link Location} data.
@@ -95,6 +97,18 @@ public class LocationRepository {
                 });
 
         return liveData;
+    }
+
+    /**
+     * Fetches a paginated list of locations.
+     */
+    public void getLocationsPage(DocumentSnapshot lastVisible, int limit, OnCompleteListener<QuerySnapshot> listener) {
+        Query query = db.collection(AppConstants.COLLECTION_LOCATIONS)
+                .limit(limit);
+        if (lastVisible != null) {
+            query = query.startAfter(lastVisible);
+        }
+        query.get().addOnCompleteListener(listener);
     }
 
     /**

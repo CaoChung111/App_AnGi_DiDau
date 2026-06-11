@@ -101,12 +101,11 @@ public class SearchViewModel extends ViewModel {
 
     private void executeSearch(String query) {
         currentQuery = query;
-        String lowerQuery = query.toLowerCase();
+        String lowerQuery = removeAccents(query);
 
         List<Food> filteredFoods = new ArrayList<>();
         for (Food f : cachedFoods) {
-            if ((f.getName() != null && f.getName().toLowerCase().contains(lowerQuery)) ||
-                (f.getDescription() != null && f.getDescription().toLowerCase().contains(lowerQuery))) {
+            if (f.getName() != null && removeAccents(f.getName()).contains(lowerQuery)) {
                 filteredFoods.add(f);
             }
         }
@@ -114,8 +113,7 @@ public class SearchViewModel extends ViewModel {
 
         List<Location> filteredLocations = new ArrayList<>();
         for (Location l : cachedLocations) {
-            if ((l.getName() != null && l.getName().toLowerCase().contains(lowerQuery)) ||
-                (l.getDescription() != null && l.getDescription().toLowerCase().contains(lowerQuery))) {
+            if (l.getName() != null && removeAccents(l.getName()).contains(lowerQuery)) {
                 filteredLocations.add(l);
             }
         }
@@ -123,6 +121,14 @@ public class SearchViewModel extends ViewModel {
 
         isSearching.setValue(false);
         checkIfEmpty();
+    }
+
+    private String removeAccents(String text) {
+        if (text == null) return "";
+        String normalized = java.text.Normalizer.normalize(text, java.text.Normalizer.Form.NFD);
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        String unaccented = pattern.matcher(normalized).replaceAll("").toLowerCase();
+        return unaccented.replaceAll("đ", "d").replaceAll("Đ", "d");
     }
 
     private void checkIfEmpty() {

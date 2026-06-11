@@ -32,7 +32,6 @@ public class RandomActivity extends AppCompatActivity {
 
     private SpinWheelView spinWheelView;
     private TextView tabEat, tabGo, tvResult, tvNearbyCount, btnViewDetail;
-    private TextView chipBudget, chipDistance, chipAllFood;
     private Button btnSpinNow;
     private FrameLayout btnCenterSpin;
 
@@ -43,8 +42,6 @@ public class RandomActivity extends AppCompatActivity {
 
     private List<QueryDocumentSnapshot> currentSpinData = new ArrayList<>();
 
-    private String currentBudgetFilter = "Tất cả";
-    private String currentCategoryFilter = "Tất cả món";
 
     private String selectedEntityId = null;
 
@@ -56,7 +53,7 @@ public class RandomActivity extends AppCompatActivity {
         initViews();
         setupBottomNav();
         setupTabs();
-        setupFilters();
+
         setupSpinWheel();
 
         // Load data from Firebase
@@ -71,9 +68,6 @@ public class RandomActivity extends AppCompatActivity {
         tvNearbyCount = findViewById(R.id.tvNearbyCount);
         btnViewDetail = findViewById(R.id.btnViewDetail);
         
-        chipBudget = findViewById(R.id.chipBudget);
-        chipDistance = findViewById(R.id.chipDistance);
-        chipAllFood = findViewById(R.id.chipAllFood);
 
         btnSpinNow = findViewById(R.id.btnSpinNow);
         btnCenterSpin = findViewById(R.id.btnCenterSpin);
@@ -153,68 +147,11 @@ public class RandomActivity extends AppCompatActivity {
         });
     }
 
-    private void setupFilters() {
-        chipBudget.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(this, v);
-            popup.getMenu().add("Tất cả");
-            popup.getMenu().add("Dưới 100k");
-            popup.getMenu().add("100k - 500k");
-            popup.getMenu().add("Trên 500k");
-            popup.setOnMenuItemClickListener(item -> {
-                currentBudgetFilter = item.getTitle().toString();
-                chipBudget.setText("🍽 " + currentBudgetFilter);
-                chipBudget.setBackgroundResource(R.drawable.bg_tab_selected);
-                chipBudget.setTextColor(getResources().getColor(R.color.white));
-                applyFilters();
-                return true;
-            });
-            popup.show();
-        });
 
-        chipAllFood.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(this, v);
-            popup.getMenu().add(isFoodTab ? "Tất cả món" : "Tất cả loại hình");
-            if (isFoodTab) {
-                popup.getMenu().add("Bữa chính");
-                popup.getMenu().add("Ăn vặt");
-                popup.getMenu().add("Đồ uống");
-                popup.getMenu().add("Healthy");
-            } else {
-                popup.getMenu().add("Giải trí");
-                popup.getMenu().add("Nghỉ dưỡng");
-                popup.getMenu().add("Cafe");
-                popup.getMenu().add("Mua sắm");
-            }
-            popup.setOnMenuItemClickListener(item -> {
-                currentCategoryFilter = item.getTitle().toString();
-                chipAllFood.setText(isFoodTab ? "🍴 " + currentCategoryFilter : "🎯 " + currentCategoryFilter);
-                chipAllFood.setBackgroundResource(R.drawable.bg_tab_selected);
-                chipAllFood.setTextColor(getResources().getColor(R.color.white));
-                applyFilters();
-                return true;
-            });
-            popup.show();
-        });
-
-        chipDistance.setOnClickListener(v -> {
-            Toast.makeText(this, "Tính năng khoảng cách đang phát triển!", Toast.LENGTH_SHORT).show();
-        });
-    }
 
     private void updateTabState(boolean isFood) {
         this.isFoodTab = isFood;
 
-        // Reset filters when switching tabs
-        currentBudgetFilter = "Tất cả";
-        currentCategoryFilter = isFood ? "Tất cả món" : "Tất cả loại hình";
-        
-        chipBudget.setText("🍽 " + currentBudgetFilter);
-        chipBudget.setBackgroundResource(R.drawable.bg_tab_unselected);
-        chipBudget.setTextColor(getResources().getColor(R.color.on_surface));
-
-        chipAllFood.setText(isFood ? "🍴 " + currentCategoryFilter : "🎯 " + currentCategoryFilter);
-        chipAllFood.setBackgroundResource(R.drawable.bg_tab_unselected);
-        chipAllFood.setTextColor(getResources().getColor(R.color.on_surface));
 
         if (isFood) {
             tabEat.setBackgroundResource(R.drawable.bg_tab_selected);
@@ -236,50 +173,20 @@ public class RandomActivity extends AppCompatActivity {
         List<QueryDocumentSnapshot> filtered = new ArrayList<>();
 
         for (QueryDocumentSnapshot doc : source) {
-            boolean passBudget = true;
-            boolean passCategory = true;
-
-            Double price = doc.getDouble("price");
-            
-            // Lọc ngân sách
-            if (!currentBudgetFilter.equals("Tất cả") && price != null) {
-                if (currentBudgetFilter.equals("Dưới 100k") && price > 100000) {
-                    passBudget = false;
-                } else if (currentBudgetFilter.equals("100k - 500k") && (price < 100000 || price > 500000)) {
-                    passBudget = false;
-                } else if (currentBudgetFilter.equals("Trên 500k") && price < 500000) {
-                    passBudget = false;
-                }
-            }
-
-            // Lọc thể loại
-            if (!currentCategoryFilter.equals("Tất cả món") && !currentCategoryFilter.equals("Tất cả loại hình")) {
-                String desc = doc.getString("description");
-                String name = doc.getString("name");
-                
-                boolean match = false;
-                if (name != null && name.toLowerCase().contains(currentCategoryFilter.toLowerCase())) match = true;
-                if (desc != null && desc.toLowerCase().contains(currentCategoryFilter.toLowerCase())) match = true;
-                
-                if (!match) passCategory = false;
-            }
-
-            if (passBudget && passCategory) {
-                filtered.add(doc);
-            }
+            filtered.add(doc);
         }
 
-        tvNearbyCount.setText(filtered.size() + (isFoodTab ? " Quán Thỏa Mãn" : " Địa Điểm Thỏa Mãn"));
+        tvNearbyCount.setText(filtered.size() + (isFoodTab ? " Quán" : " Địa Điểm"));
 
-        // Shuffle and pick max 8
         Collections.shuffle(filtered);
-        int pickCount = Math.min(8, filtered.size());
+        int pickCount = Math.min(50, filtered.size());
         currentSpinData = new ArrayList<>(filtered.subList(0, pickCount));
 
         List<String> displayNames = new ArrayList<>();
         for (QueryDocumentSnapshot doc : currentSpinData) {
             String name = doc.getString("name");
-            displayNames.add(name != null ? name : "Unknown");
+            if (name == null) name = "Unknown";
+            displayNames.add(name);
         }
 
         if (displayNames.isEmpty()) {

@@ -81,62 +81,7 @@
 
             </LinearLayout>
 
-            <!-- Filter Chips Row -->
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="12dp"
-                android:clipToPadding="false">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <!-- Chip: Dưới 100k -->
-                    <TextView
-                        android:id="@+id/chipBudget"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_tab_selected"
-                        android:paddingHorizontal="16dp"
-                        android:gravity="center"
-                        android:text="🍽 Dưới 100k"
-                        android:textColor="@color/white"
-                        android:textSize="13sp"
-                        android:textStyle="bold"/>
-
-                    <!-- Chip: 2km -->
-                    <TextView
-                        android:id="@+id/chipDistance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_tab_unselected"
-                        android:paddingHorizontal="16dp"
-                        android:gravity="center"
-                        android:text="📍 2km"
-                        android:textColor="@color/on_surface"
-                        android:textSize="13sp"/>
-
-                    <!-- Chip: Tất cả món -->
-                    <TextView
-                        android:id="@+id/chipAllFood"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_tab_unselected"
-                        android:paddingHorizontal="16dp"
-                        android:gravity="center"
-                        android:text="🍴 Tất cả món"
-                        android:textColor="@color/on_surface"
-                        android:textSize="13sp"/>
-
-                </LinearLayout>
-            </HorizontalScrollView>
 
             <!-- ===================== -->
             <!-- TAB SELECTOR: 2 mục -->
@@ -257,7 +202,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/bg_spin_btn"
-                android:text="Spin Now"
+                android:text="Quay Ngay"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"

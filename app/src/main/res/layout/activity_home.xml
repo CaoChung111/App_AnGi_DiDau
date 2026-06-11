@@ -140,9 +140,10 @@
                     app:cardElevation="2dp">
 
                     <ImageView
+                        android:id="@+id/ivFoodBanner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_restaurant_menu"
+                        android:src="@drawable/hom_nay_an_gi"
                         android:scaleType="centerCrop"
                         android:contentDescription="@string/content_description_food_image"/>
 
@@ -190,9 +191,10 @@
                     app:cardElevation="2dp">
 
                     <ImageView
+                        android:id="@+id/ivLocationBanner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_location_on"
+                        android:src="@drawable/hom_nay_di_dau"
                         android:scaleType="centerCrop"
                         android:contentDescription="@string/content_description_location_image"/>
 

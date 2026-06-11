@@ -89,7 +89,7 @@ public class LocationDetailViewModel extends ViewModel {
                 com.example.angi_didau.data.repository.FavoritesRepository.getInstance().removeFavorite(user.getUid(), location.getId());
             } else {
                 com.example.angi_didau.data.repository.FavoritesRepository.getInstance().addFavorite(
-                        user.getUid(), location.getId(), "location", location.getName(), location.getImageUrl(), "");
+                        user.getUid(), location.getId(), "location", location.getName(), location.getImageUrl(), "", false);
             }
         }
     }
