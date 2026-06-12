@@ -18,10 +18,16 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="Lên kế hoạch AI"
-            app:titleTextColor="@color/primary_container"
-            app:titleCentered="true">
+            android:layout_height="?attr/actionBarSize">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="16dp"
+                android:text="Lên kế hoạch AI"
+                android:textColor="@color/primary_container"
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -186,17 +192,7 @@
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:layout_marginStart="8dp"/>
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"/>
-                    <TextView
-                        android:id="@+id/tvBudget"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="300k - 500k VNĐ"
-                        android:textColor="@color/primary_container"
-                        android:textSize="14sp"/>
+
                 </LinearLayout>
 
                 <androidx.cardview.widget.CardView
@@ -212,37 +208,17 @@
                         android:orientation="vertical"
                         android:padding="20dp">
                         
-                        <SeekBar
-                            android:id="@+id/sbBudget"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:progress="3"
-                            android:max="5"
-                            android:progressTint="@color/primary_container"
-                            android:thumbTint="@color/primary_container"/>
 
-                        <LinearLayout
+                        <EditText
+                            android:id="@+id/etBudget"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="8dp">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Tiết kiệm"
-                                android:textColor="@color/secondary"
-                                android:textSize="12sp"/>
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Sang chảnh"
-                                android:textColor="@color/secondary"
-                                android:textSize="12sp"/>
-                        </LinearLayout>
+                            android:inputType="numberDecimal"
+                            android:hint="Nhập ngân sách (VNĐ)"
+                            android:textColor="@color/primary_container"
+                            android:textSize="14sp"
+                            android:padding="12dp"
+                            android:background="@drawable/bg_edit_text"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 

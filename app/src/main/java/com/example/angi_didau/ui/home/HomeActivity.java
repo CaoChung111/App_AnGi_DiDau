@@ -69,10 +69,22 @@ public class HomeActivity extends AppCompatActivity {
             String userName = sessionManager.getUserName();
             if (sessionManager.isGuestMode()) {
                 userName = "Khách";
-            } else if (userName == null || userName.isEmpty()) {
-                userName = firebaseUser != null && firebaseUser.getEmail() != null ? firebaseUser.getEmail().split("@")[0] : "Người dùng";
+                tvUserName.setText(userName + " 👋");
+            } else {
+                if (userName == null || userName.isEmpty()) {
+                    userName = firebaseUser != null && firebaseUser.getDisplayName() != null && !firebaseUser.getDisplayName().isEmpty() 
+                               ? firebaseUser.getDisplayName() : "Người dùng";
+                }
+                tvUserName.setText(userName + " 👋");
+                
+                // Fetch the latest username from Firestore
+                com.example.angi_didau.data.repository.UserRepository.getInstance().getCurrentUserData().observe(this, user -> {
+                    if (user != null && user.getUsername() != null && !user.getUsername().isEmpty()) {
+                        tvUserName.setText(user.getUsername() + " 👋");
+                        sessionManager.saveLoginState(true, user.getId(), user.getUsername());
+                    }
+                });
             }
-            tvUserName.setText(userName + " 👋");
         }
         // ─────────────────────────────────────────────────────────
 

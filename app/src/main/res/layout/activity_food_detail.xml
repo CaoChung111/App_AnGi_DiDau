@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="64dp"
+                    android:layout_marginBottom="100dp"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="4dp"
                     android:background="@drawable/shape_pill"
@@ -345,11 +345,14 @@
             app:icon="@drawable/ic_reviews"
             app:iconGravity="textStart"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:backgroundTint="@color/primary_container"
+            android:textColor="@color/white"
+            app:iconTint="@color/white" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDirections"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.Material3.Button"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
@@ -358,7 +361,10 @@
             app:icon="@drawable/ic_directions_walk"
             app:iconGravity="textStart"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:backgroundTint="@color/primary_container"
+            android:textColor="@color/white"
+            app:iconTint="@color/white" />
 
     </LinearLayout>
 

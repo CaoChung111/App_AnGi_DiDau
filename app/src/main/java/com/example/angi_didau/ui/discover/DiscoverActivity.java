@@ -168,30 +168,10 @@ public class DiscoverActivity extends AppCompatActivity {
             });
         }
 
-        SeekBar sbBudget = findViewById(R.id.sbBudget);
-        TextView tvBudget = findViewById(R.id.tvBudget);
-        if (sbBudget != null && tvBudget != null) {
-            sbBudget.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    String[] budgets = {
-                        "Dưới 100k VNĐ",
-                        "100k - 300k VNĐ",
-                        "300k - 500k VNĐ",
-                        "500k - 1tr VNĐ",
-                        "1tr - 2tr VNĐ",
-                        "Trên 2tr VNĐ"
-                    };
-                    if (progress >= 0 && progress < budgets.length) {
-                        tvBudget.setText(budgets[progress]);
-                    }
-                }
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
-        }
+        // Budget input handled via EditText
+EditText etBudget = findViewById(R.id.etBudget);
+String budgetInput = etBudget != null ? etBudget.getText().toString().trim() : "";
+String budgetStr = budgetInput.isEmpty() ? "Không xác định" : budgetInput + " VNĐ";
 
         Button btnSuggest = findViewById(R.id.btnSuggest);
         btnSuggest.setOnClickListener(v -> simulateAIGeneration());
@@ -277,8 +257,7 @@ public class DiscoverActivity extends AppCompatActivity {
         // Get user input values
         TextView tvStartTime = findViewById(R.id.tvStartTime);
         TextView tvEndTime = findViewById(R.id.tvEndTime);
-        TextView tvBudget = findViewById(R.id.tvBudget);
-        EditText etPrompt = findViewById(R.id.llForm).findViewById(R.id.sbBudget).getRootView().findViewById(R.id.llForm).findViewWithTag("etPrompt"); // Just use find views directly
+
         // Wait, etPrompt is an EditText in llForm without ID but has hint "Ví dụ: Hẹn hò lãng mạn...". Let's try to find it.
         EditText etUserInput = null;
         for (int i = 0; i < llForm.getChildCount(); i++) {
@@ -296,7 +275,10 @@ public class DiscoverActivity extends AppCompatActivity {
         
         String startTime = tvStartTime != null ? tvStartTime.getText().toString() : "06:00 PM";
         String endTime = tvEndTime != null ? tvEndTime.getText().toString() : "10:00 PM";
-        String budgetStr = tvBudget != null ? tvBudget.getText().toString() : "300k - 500k VNĐ";
+        // Budget input handled via EditText
+        EditText etBudget = findViewById(R.id.etBudget);
+        String budgetInput = etBudget != null ? etBudget.getText().toString().trim() : "";
+        String budgetStr = budgetInput.isEmpty() ? "Không xác định" : budgetInput + " VNĐ";
         String userThinking = (etUserInput != null && !etUserInput.getText().toString().isEmpty()) 
                                 ? etUserInput.getText().toString() : "Không có yêu cầu đặc biệt";
         

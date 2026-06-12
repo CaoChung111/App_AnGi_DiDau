@@ -94,46 +94,64 @@ public class GeminiService {
                 }
 
                 int statusCode = conn.getResponseCode();
-                if (statusCode == 200) {
-                    // Tối ưu hóa việc đọc Stream dữ liệu lớn bằng mảng char buffer (nhanh hơn readLine từng dòng)
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8), 8192);
-                    StringBuilder responseStr = new StringBuilder();
-                    char[] buffer = new char[4096];
-                    int bytesRead;
-                    while ((bytesRead = br.read(buffer)) != -1) {
-                        responseStr.append(buffer, 0, bytesRead);
+                // Retry on 503 (Service Unavailable) up to 3 attempts
+                int attempts = 0;
+                while (true) {
+                    attempts++;
+                    int statusCode = conn.getResponseCode();
+                    if (statusCode == 200) {
+                        // success handling (existing code)
+                        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8), 8192);
+                        StringBuilder responseStr = new StringBuilder();
+                        char[] buffer = new char[4096];
+                        int bytesRead;
+                        while ((bytesRead = br.read(buffer)) != -1) {
+                            responseStr.append(buffer, 0, bytesRead);
+                        }
+                        br.close();
+
+                        JSONObject root = new JSONObject(responseStr.toString());
+                        String text = root.getJSONArray("candidates")
+                                .getJSONObject(0)
+                                .getJSONObject("content")
+                                .getJSONArray("parts")
+                                .getJSONObject(0)
+                                .getString("text");
+                        String finalText = text.trim();
+                        Log.d(TAG, "--- GEMINI CLEAN RESPONSE ---");
+                        Log.d(TAG, finalText);
+                        mainHandler.post(() -> callback.onSuccess(finalText));
+                        break; // exit loop
+                    } else if (statusCode == 503 && attempts < 3) {
+                        // wait and retry
+                        Log.w(TAG, "Gemini API 503, retry attempt " + attempts);
+                        Thread.sleep(2000);
+                        // re-open connection for retry
+                        conn.disconnect();
+                        conn = (HttpURLConnection) new URL(API_URL).openConnection();
+                        conn.setRequestMethod("POST");
+                        conn.setRequestProperty("Content-Type", "application/json");
+                        conn.setConnectTimeout(60000);
+                        conn.setReadTimeout(0);
+                        conn.setDoOutput(true);
+                        try (OutputStream os = conn.getOutputStream()) {
+                            byte[] input = body.toString().getBytes(StandardCharsets.UTF_8);
+                            os.write(input, 0, input.length);
+                        }
+                        continue;
+                    } else {
+                        // error handling (existing code)
+                        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream(), StandardCharsets.UTF_8));
+                        StringBuilder errorStr = new StringBuilder();
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            errorStr.append(line.trim());
+                        }
+                        br.close();
+                        Log.e(TAG, "API Error Status: " + statusCode + " | Details: " + errorStr.toString());
+                        mainHandler.post(() -> callback.onError("Lỗi máy chủ API: " + statusCode));
+                        break;
                     }
-                    br.close();
-
-                    // Phân tích cú pháp JSON phản hồi từ Gemini
-                    JSONObject root = new JSONObject(responseStr.toString());
-                    String text = root.getJSONArray("candidates")
-                            .getJSONObject(0)
-                            .getJSONObject("content")
-                            .getJSONArray("parts")
-                            .getJSONObject(0)
-                            .getString("text");
-
-                    String finalText = text.trim();
-
-                    // Log dữ liệu để debug kiểm tra cấu trúc
-                    Log.d(TAG, "--- GEMINI CLEAN RESPONSE ---");
-                    Log.d(TAG, finalText);
-
-                    // Trả kết quả về Main Thread an toàn
-                    mainHandler.post(() -> callback.onSuccess(finalText));
-                } else {
-                    // Đọc nhanh thông tin lỗi từ Stream nếu mã phản hồi không phải 200
-                    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getErrorStream(), StandardCharsets.UTF_8));
-                    StringBuilder errorStr = new StringBuilder();
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        errorStr.append(line.trim());
-                    }
-                    br.close();
-
-                    Log.e(TAG, "API Error Status: " + statusCode + " | Details: " + errorStr.toString());
-                    mainHandler.post(() -> callback.onError("Lỗi máy chủ API: " + statusCode));
                 }
 
             } catch (Exception e) {

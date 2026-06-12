@@ -58,9 +58,9 @@ public class LocationDetailActivity extends AppCompatActivity {
 
         setupReviews();
 
-        FloatingActionButton fabAddReview = findViewById(R.id.fabAddReview);
-        if (fabAddReview != null) {
-            fabAddReview.setOnClickListener(v -> onAddReviewClicked(locationId));
+        View btnAddReview = findViewById(R.id.btnAddReview);
+        if (btnAddReview != null) {
+            btnAddReview.setOnClickListener(v -> onAddReviewClicked(locationId));
         }
 
         setupHeroGallery();
@@ -160,15 +160,7 @@ public class LocationDetailActivity extends AppCompatActivity {
                 });
             }
 
-            TextView tvAverageRatingBig = findViewById(R.id.tvAverageRatingBig);
-            if (tvAverageRatingBig != null) {
-                tvAverageRatingBig.setText(String.valueOf(location.getAverageRating()));
-            }
-
-            RatingBar rbAverageRating = findViewById(R.id.rbAverageRating);
-            if (rbAverageRating != null) {
-                rbAverageRating.setRating((float) location.getAverageRating());
-            }
+            // (Removed average rating UI updates to match FoodDetail style)
 
             // Setup Navigation Buttons
             android.view.View.OnClickListener navListener = v -> {
@@ -196,9 +188,9 @@ public class LocationDetailActivity extends AppCompatActivity {
 
 
 
-            android.widget.Button btnNavigateTop = findViewById(R.id.btnNavigateTop);
-            if (btnNavigateTop != null) {
-                btnNavigateTop.setOnClickListener(navListener);
+            android.view.View btnDirections = findViewById(R.id.btnDirections);
+            if (btnDirections != null) {
+                btnDirections.setOnClickListener(navListener);
             }
         });
 
@@ -222,15 +214,7 @@ public class LocationDetailActivity extends AppCompatActivity {
                 }
                 float avg = sum / count;
                 
-                TextView tvAverageRatingBig = findViewById(R.id.tvAverageRatingBig);
-                if (tvAverageRatingBig != null) {
-                    tvAverageRatingBig.setText(String.format(java.util.Locale.US, "%.1f", avg));
-                }
-
-                RatingBar rbAverageRating = findViewById(R.id.rbAverageRating);
-                if (rbAverageRating != null) {
-                    rbAverageRating.setRating(avg);
-                }
+                // Average rating is displayed on the main card's tvLocationRating
                 
                 TextView tvRating = findViewById(R.id.tvLocationRating);
                 if (tvRating != null) {
