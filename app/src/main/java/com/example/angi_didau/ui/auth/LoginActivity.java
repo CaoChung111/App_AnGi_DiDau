@@ -35,6 +35,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Check internet connectivity before doing anything
+        if (!com.example.angi_didau.ui.common.NoInternetActivity.checkAndRedirect(this)) return;
+
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         sessionManager = new SessionManager(this);
 

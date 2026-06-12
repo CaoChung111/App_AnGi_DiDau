@@ -49,6 +49,36 @@ public class FoodListActivity extends AppCompatActivity {
         setupRecyclerView();
         observeViewModel();
         setupBottomNav();
+        setupSearch();
+    }
+
+    private void setupSearch() {
+        android.widget.EditText etSearch = findViewById(R.id.etListSearch);
+        if (etSearch == null) return;
+        etSearch.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(android.text.Editable s) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterFoods(s.toString().toLowerCase().trim());
+            }
+        });
+    }
+
+    private List<StaggeredItem> allFoodItems = new ArrayList<>();
+
+    private void filterFoods(String query) {
+        if (query.isEmpty()) {
+            adapter.submitList(new ArrayList<>(allFoodItems));
+            return;
+        }
+        List<StaggeredItem> filtered = new ArrayList<>();
+        for (StaggeredItem item : allFoodItems) {
+            if (item.getTitle().toLowerCase().contains(query)) {
+                filtered.add(item);
+            }
+        }
+        adapter.submitList(filtered);
     }
 
     private void setupRecyclerView() {
@@ -91,17 +121,23 @@ public class FoodListActivity extends AppCompatActivity {
         viewModel.getFoods().observe(this, foods -> {
             viewModel.onDataLoaded();
             if (foods != null && !foods.isEmpty()) {
-                List<StaggeredItem> items = new ArrayList<>();
+                allFoodItems = new ArrayList<>();
                 for (com.example.angi_didau.data.model.Food food : foods) {
-                    items.add(new StaggeredItem(
+                    String priceStr = "Miễn phí";
+                    if (food.getPrice() > 0) {
+                        java.text.NumberFormat format = java.text.NumberFormat.getCurrencyInstance(new java.util.Locale("vi", "VN"));
+                        priceStr = format.format(food.getPrice());
+                    }
+                    allFoodItems.add(new StaggeredItem(
                             food.getId(),
                             food.getName(),
                             String.format("%.1f ⭐", food.getAverageRating()),
                             food.getAverageRating(),
-                            food.getImageUrl()
+                            food.getImageUrl(),
+                            priceStr
                     ));
                 }
-                adapter.submitList(items);
+                adapter.submitList(new ArrayList<>(allFoodItems));
             } else {
                 // Mock data for demo
                 adapter.submitList(getMockData());

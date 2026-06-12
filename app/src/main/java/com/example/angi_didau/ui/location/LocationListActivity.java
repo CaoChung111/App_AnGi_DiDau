@@ -49,6 +49,36 @@ public class LocationListActivity extends AppCompatActivity {
         setupRecyclerView();
         observeViewModel();
         setupBottomNav();
+        setupSearch();
+    }
+
+    private void setupSearch() {
+        android.widget.EditText etSearch = findViewById(R.id.etListSearch);
+        if (etSearch == null) return;
+        etSearch.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(android.text.Editable s) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterLocations(s.toString().toLowerCase().trim());
+            }
+        });
+    }
+
+    private List<StaggeredItem> allLocationItems = new ArrayList<>();
+
+    private void filterLocations(String query) {
+        if (query.isEmpty()) {
+            adapter.submitList(new ArrayList<>(allLocationItems));
+            return;
+        }
+        List<StaggeredItem> filtered = new ArrayList<>();
+        for (StaggeredItem item : allLocationItems) {
+            if (item.getTitle().toLowerCase().contains(query)) {
+                filtered.add(item);
+            }
+        }
+        adapter.submitList(filtered);
     }
 
     private void setupRecyclerView() {
@@ -89,17 +119,23 @@ public class LocationListActivity extends AppCompatActivity {
         viewModel.getLocations().observe(this, locations -> {
             viewModel.onDataLoaded();
             if (locations != null && !locations.isEmpty()) {
-                List<StaggeredItem> items = new ArrayList<>();
+                allLocationItems = new ArrayList<>();
                 for (com.example.angi_didau.data.model.Location loc : locations) {
-                    items.add(new StaggeredItem(
+                    String priceStr = "Miễn phí";
+                    if (loc.getPrice() > 0) {
+                        java.text.NumberFormat format = java.text.NumberFormat.getCurrencyInstance(new java.util.Locale("vi", "VN"));
+                        priceStr = format.format(loc.getPrice());
+                    }
+                    allLocationItems.add(new StaggeredItem(
                             loc.getId(),
                             loc.getName(),
                             loc.getAddress(),
                             loc.getAverageRating(),
-                            loc.getImageUrl()
+                            loc.getImageUrl(),
+                            priceStr
                     ));
                 }
-                adapter.submitList(items);
+                adapter.submitList(new ArrayList<>(allLocationItems));
             } else {
                 adapter.submitList(getMockData());
             }

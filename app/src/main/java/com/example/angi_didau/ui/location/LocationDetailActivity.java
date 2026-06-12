@@ -100,6 +100,20 @@ public class LocationDetailActivity extends AppCompatActivity {
                     }
                 }
                 vpLocationHero.setAdapter(new com.example.angi_didau.adapter.PhotoGalleryAdapter(realPhotos, true));
+                
+                TextView tvLocationPhotoCount = findViewById(R.id.tvLocationPhotoCount);
+                if (realPhotos.size() > 1 && tvLocationPhotoCount != null) {
+                    tvLocationPhotoCount.setVisibility(android.view.View.VISIBLE);
+                    tvLocationPhotoCount.setText("1/" + realPhotos.size() + " Ảnh (Vuốt ➔)");
+                    
+                    final int totalPhotos = realPhotos.size();
+                    vpLocationHero.registerOnPageChangeCallback(new androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+                        @Override
+                        public void onPageSelected(int position) {
+                            tvLocationPhotoCount.setText((position + 1) + "/" + totalPhotos + " Ảnh (Vuốt ➔)");
+                        }
+                    });
+                }
             }
 
             TextView tvOverviewAddress = findViewById(R.id.tvOverviewAddress);
@@ -148,29 +162,31 @@ public class LocationDetailActivity extends AppCompatActivity {
                 double lat = location.getLatitude();
                 double lng = location.getLongitude();
                 
-                // Fallback nếu Firebase không có tọa độ (mặc định là 0.0)
+                // Fallback ếu Firebase không có tọa độ
                 if (lat == 0.0 && lng == 0.0) {
                     lat = 21.05398129592764;
                     lng = 105.7349780492407;
                 }
-                
-                String uri = "google.navigation:q=" + lat + "," + lng;
-                android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(uri));
+                // Mở Google Maps với tọa độ thực và tên địa điểm
+                String uriStr = String.format(java.util.Locale.US, "geo:0,0?q=%f,%f(%s)", lat, lng, location.getName());
+                android.net.Uri uri = android.net.Uri.parse(uriStr);
+                android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, uri);
                 intent.setPackage("com.google.android.apps.maps");
-
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 } else {
-                    android.widget.Toast.makeText(this, "Bạn chưa cài đặt Google Maps!", android.widget.Toast.LENGTH_SHORT).show();
+                    // Fallback mở browser tìm kiếm theo tên
+                    String mapUrl = "https://www.google.com/maps/search/?api=1&query=" + android.net.Uri.encode(location.getName() + " " + location.getAddress());
+                    startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(mapUrl)));
                 }
             };
+
+
 
             android.widget.Button btnNavigateTop = findViewById(R.id.btnNavigateTop);
             if (btnNavigateTop != null) {
                 btnNavigateTop.setOnClickListener(navListener);
             }
-
-
         });
 
         viewModel.getReviews().observe(this, reviews -> {

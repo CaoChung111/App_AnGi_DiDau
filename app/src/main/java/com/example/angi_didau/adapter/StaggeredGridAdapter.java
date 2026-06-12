@@ -88,18 +88,33 @@ public class StaggeredGridAdapter extends ListAdapter<StaggeredItem, StaggeredGr
         if (onItemClickListener != null) {
             holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(item));
         }
+        
+        if (holder.tvItemPrice != null) {
+            if (item.getPriceLabel() != null && !item.getPriceLabel().isEmpty()) {
+                holder.tvItemPrice.setText(item.getPriceLabel());
+                holder.tvItemPrice.setVisibility(View.VISIBLE);
+                if (item.getPriceLabel().equals("Miễn phí")) {
+                    holder.tvItemPrice.setTextColor(android.graphics.Color.parseColor("#388E3C")); // Green
+                } else {
+                    holder.tvItemPrice.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.primary));
+                }
+            } else {
+                holder.tvItemPrice.setVisibility(View.GONE);
+            }
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgItem;
-        TextView  tvTitle, tvSubtitle, tvRating;
+        TextView  tvTitle, tvSubtitle, tvRating, tvItemPrice;
 
         ViewHolder(View itemView) {
             super(itemView);
-            imgItem    = itemView.findViewById(R.id.imgItem);
-            tvTitle    = itemView.findViewById(R.id.tvItemTitle);
-            tvSubtitle = itemView.findViewById(R.id.tvItemSubtitle);
-            tvRating   = itemView.findViewById(R.id.tvRating);
+            imgItem     = itemView.findViewById(R.id.imgItem);
+            tvTitle     = itemView.findViewById(R.id.tvItemTitle);
+            tvSubtitle  = itemView.findViewById(R.id.tvItemSubtitle);
+            tvRating    = itemView.findViewById(R.id.tvRating);
+            tvItemPrice = itemView.findViewById(R.id.tvItemPrice);
         }
     }
 }

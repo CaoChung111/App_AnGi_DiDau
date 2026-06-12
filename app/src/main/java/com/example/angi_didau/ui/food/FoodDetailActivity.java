@@ -36,7 +36,8 @@ public class FoodDetailActivity extends AppCompatActivity {
     private String currentFoodName = "";
 
     // Views
-    private ImageView ivFoodImage;
+    private androidx.viewpager2.widget.ViewPager2 vpFoodHero;
+    private android.widget.TextView tvPhotoCount;
     private TextView  tvFoodName;
     private TextView  tvFoodDescription;
     private TextView  tvFoodPrice;
@@ -62,7 +63,8 @@ public class FoodDetailActivity extends AppCompatActivity {
     }
 
     private void bindViews() {
-        ivFoodImage       = findViewById(R.id.ivHero);
+        vpFoodHero        = findViewById(R.id.vpFoodHero);
+        tvPhotoCount      = findViewById(R.id.tvPhotoCount);
         tvFoodName        = findViewById(R.id.tvFoodDetailName);
         tvFoodDescription = findViewById(R.id.tvFoodDetailDescription);
         tvFoodPrice       = findViewById(R.id.tvFoodDetailPrice);
@@ -73,7 +75,6 @@ public class FoodDetailActivity extends AppCompatActivity {
         if (ivBack != null) {
             ivBack.setOnClickListener(v -> finish());
         }
-
     }
 
     private void setupNearbyRestaurants() {
@@ -134,11 +135,31 @@ public class FoodDetailActivity extends AppCompatActivity {
                     String.format("%,d đ", (long) food.getPrice()));
             if (tvRatingValue != null) tvRatingValue.setText(String.valueOf(food.getAverageRating()));
 
-            Glide.with(this)
-                    .load(food.getImageUrl())
-                    .placeholder(R.drawable.ic_restaurant_menu)
-                    .centerCrop()
-                    .into(ivFoodImage);
+            // Bind gallery images
+            java.util.List<String> imageUrls = food.getImageUrls();
+            if (imageUrls == null || imageUrls.isEmpty()) {
+                imageUrls = new java.util.ArrayList<>();
+                if (food.getImageUrl() != null && !food.getImageUrl().isEmpty()) {
+                    imageUrls.add(food.getImageUrl());
+                }
+            }
+            if (vpFoodHero != null) {
+                final java.util.List<String> finalUrls = imageUrls;
+                com.example.angi_didau.adapter.PhotoGalleryAdapter galleryAdapter =
+                        new com.example.angi_didau.adapter.PhotoGalleryAdapter(finalUrls, true);
+                vpFoodHero.setAdapter(galleryAdapter);
+
+                if (finalUrls.size() > 1 && tvPhotoCount != null) {
+                    tvPhotoCount.setVisibility(android.view.View.VISIBLE);
+                    tvPhotoCount.setText("1/" + finalUrls.size() + " Ảnh (Vuốt ➔)");
+                    vpFoodHero.registerOnPageChangeCallback(new androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
+                        @Override
+                        public void onPageSelected(int position) {
+                            tvPhotoCount.setText((position + 1) + "/" + finalUrls.size() + " Ảnh (Vuốt ➔)");
+                        }
+                    });
+                }
+            }
 
             // Intent Actions
             View btnShare = findViewById(R.id.btnShare);
@@ -162,14 +183,15 @@ public class FoodDetailActivity extends AppCompatActivity {
             View btnDirections = findViewById(R.id.btnDirections);
             if (btnDirections != null) {
                 btnDirections.setOnClickListener(v -> {
-                    android.net.Uri gmmIntentUri = android.net.Uri.parse("geo:0,0?q=quán " + food.getName());
+                    String searchQuery = android.net.Uri.encode("quán " + food.getName() + " Hà Nội");
+                    android.net.Uri gmmIntentUri = android.net.Uri.parse("geo:21.0285,105.8542?q=" + searchQuery);
                     android.content.Intent mapIntent = new android.content.Intent(android.content.Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     if (mapIntent.resolveActivity(getPackageManager()) != null) {
                         startActivity(mapIntent);
                     } else {
-                        startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW, 
-                                android.net.Uri.parse("https://www.google.com/maps/search/?api=1&query=" + android.net.Uri.encode("quán " + food.getName()))));
+                        startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW,
+                                android.net.Uri.parse("https://www.google.com/maps/search/?api=1&query=" + searchQuery)));
                     }
                 });
             }

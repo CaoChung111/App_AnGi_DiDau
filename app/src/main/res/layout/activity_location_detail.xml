@@ -40,6 +40,7 @@
                     
                     <!-- Photos Counter Indicator -->
                     <TextView
+                        android:id="@+id/tvLocationPhotoCount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|end"
@@ -48,9 +49,10 @@
                         android:paddingVertical="4dp"
                         android:background="@drawable/shape_pill"
                         android:backgroundTint="#80000000"
-                        android:text="1/12 Photos"
+                        android:text="1/1 Ảnh"
                         android:textColor="@color/white"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:visibility="gone"/>
                 </FrameLayout>
 
                 <!-- Place Identity -->
@@ -133,7 +135,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Modern Vietnamese Cuisine • Bistro • District 1"
+                            android:text="Địa điểm nổi bật"
                             android:textColor="@color/secondary"
                             android:textSize="14sp"
                             android:maxLines="1"
@@ -214,7 +216,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Location"
+                        android:text="Vị trí"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@color/on_surface"/>
@@ -242,7 +244,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="Loading address..."
+                        android:text="Đang tải địa chỉ..."
                         android:textColor="@color/on_surface"
                         android:textSize="14sp"
                         android:lineSpacingExtra="4dp"/>
@@ -252,7 +254,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="About"
+                    android:text="Giới thiệu"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/on_surface"

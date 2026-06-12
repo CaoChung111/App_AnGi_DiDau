@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.angi_didau.R;
 
 import java.util.List;
@@ -39,14 +40,20 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         holder.tvDescription.setText(item.getDescription());
         holder.tvLocation.setText(item.getLocation());
         
-        // Load fake images directly since it's hardcoded for this UI
-        holder.ivImage.setImageResource(item.getImageResId());
-        holder.ivTypeIcon.setImageResource(item.getIconResId());
-
-        // Hide the top line for the first item
-        if (position == 0) {
-            // We'll just let it draw, or we could modify constraints if we wanted to be pixel-perfect.
+        // Load image: use URL if available, else use default icon
+        String imageUrl = item.getImageUrl();
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(imageUrl)
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_discover)
+                    .into(holder.ivImage);
+        } else {
+            holder.ivImage.setImageResource(R.drawable.ic_discover);
+            holder.ivImage.setScaleType(ImageView.ScaleType.CENTER);
         }
+        
+        holder.ivTypeIcon.setImageResource(item.getIconResId());
 
         holder.itemView.setOnClickListener(v -> {
             if (item.getEntityId() != null && !item.getEntityId().isEmpty()) {

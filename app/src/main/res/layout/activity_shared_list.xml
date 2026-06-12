@@ -79,6 +79,7 @@
                         app:tint="@color/secondary" />
 
                     <EditText
+                        android:id="@+id/etListSearch"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -86,6 +87,8 @@
                         android:hint="Tìm món ngon, chỗ đẹp..."
                         android:textColor="@color/on_surface"
                         android:textColorHint="@color/secondary"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
                         android:textSize="14sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

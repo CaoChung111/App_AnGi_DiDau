@@ -3,6 +3,8 @@
 
     <!-- Network access for Firebase and future API calls -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".AnGiDiDauApplication"
@@ -106,6 +108,10 @@
         <!-- ──────────────────────────── -->
         <activity
             android:name=".ui.favorites.FavoritesActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.common.NoInternetActivity"
             android:exported="false" />
 
     </application>

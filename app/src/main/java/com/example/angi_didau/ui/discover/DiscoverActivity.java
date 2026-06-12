@@ -88,6 +88,11 @@ public class DiscoverActivity extends AppCompatActivity {
         TextView tvAiResultTotalCost = findViewById(R.id.tvAiResultTotalCost);
         if (tvAiResultTotalCost != null) tvAiResultTotalCost.setText("Dự kiến: " + plan.getTotalCost());
         
+        TextView tvAiResultTitle = findViewById(R.id.tvAiResultTitle);
+        if (tvAiResultTitle != null) {
+            tvAiResultTitle.setText(plan.getTitle() != null ? plan.getTitle() : "Lịch trình đã lưu");
+        }
+        
         RecyclerView rvTimeline = findViewById(R.id.rvTimeline);
         if (rvTimeline != null) {
             rvTimeline.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
@@ -296,9 +301,9 @@ public class DiscoverActivity extends AppCompatActivity {
                                 ? etUserInput.getText().toString() : "Không có yêu cầu đặc biệt";
         
         // Fetch data from Firestore before calling AI
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Task<QuerySnapshot> foodsTask = db.collection(AppConstants.COLLECTION_FOODS).limit(50).get();
-        Task<QuerySnapshot> locationsTask = db.collection(AppConstants.COLLECTION_LOCATIONS).limit(50).get();
+        // Lấy tất cả dữ liệu theo yêu cầu của user, nhưng bỏ gửi Image URL cho AI để tối ưu hóa
+        Task<QuerySnapshot> foodsTask = db.collection(AppConstants.COLLECTION_FOODS).get();
+        Task<QuerySnapshot> locationsTask = db.collection(AppConstants.COLLECTION_LOCATIONS).get();
 
         Tasks.whenAllSuccess(foodsTask, locationsTask).addOnSuccessListener(results -> {
             StringBuilder dbContext = new StringBuilder();
@@ -319,21 +324,22 @@ public class DiscoverActivity extends AppCompatActivity {
             }
 
             String systemInstruction = "Bạn là một trợ lý ảo chuyên lên kế hoạch đi chơi (Ăn Gì, Đi Đâu) cho người dùng tại Việt Nam. " +
-                    "Dựa vào thông tin Ngân sách, Thời gian, Số lượng người và Ý thích, hãy tạo ra 1 lộ trình gồm 2-3 địa điểm (ăn uống, giải trí). " +
-                    "QUAN TRỌNG: BẠN CHỈ ĐƯỢC PHÉP CHỌN CÁC ĐỊA ĐIỂM VÀ MÓN ĂN TỪ DANH SÁCH BÊN DƯỚI. KHÔNG TỰ BỊA RA TÊN KHÁC.\n" +
+                    "Dựa vào Ngân sách, Thời gian, Số lượng người và Ý thích, hãy tạo 1 lộ trình gồm TUẨN TỰ các địa điểm phù hợp với khoảng thời gian từ " + startTime + " đến " + endTime + ". " +
+                    "Số địa điểm trong lộ trình: TÍNH TOÁN DỰA TRÊN KHUNG GIờ (TB 1-2 giờ/địa điểm), đảm bảo LUÔN CÓ Ít nhất 4 mục. " +
+                    "QUẢN TRọNG: CHỈ ĐƯỢC CHỌ CÁC ĐỊ ĐIỈM VÀ MÓN ĂN TỪ DANH SÁCH BÊN DƯỚI. KHÔNG TỰ BỊA RA TÊN KHÁC.\n" +
                     dbContext.toString() +
                     "\nTrả về kết quả DƯỚI DẠNG MẢNG JSON HỢP LỆ (chỉ JSON, không chứa markdown ```json hay giải thích thêm). " +
                     "Cấu trúc mỗi object trong mảng: " +
-                    "{\"timeCategory\": \"Giờ bắt đầu (VD: 18:00 — CAFE)\", " +
+                    "{\"timeCategory\": \"Giờ bắt đầu chính xác (VD: 09:00 — CAFE)\", " +
                     "\"title\": \"Tên địa điểm\", " +
                     "\"price\": \"Giá tham khảo\", " +
                     "\"description\": \"Mô tả lý do chọn/ trải nghiệm\", " +
                     "\"location\": \"Địa chỉ ngắn gọn\", " +
                     "\"type\": \"Food hoặc Location\", " +
-                    "\"entityId\": \"ID của món ăn/địa điểm bạn chọn từ danh sách trên\", " +
-                    "\"entityType\": \"Food hoặc Location tương ứng\"}";
+                    "\"entityId\": \"TRẢ VỀ CHÍNH XÁC ID của món ăn/địa điểm bạn chọn từ danh sách trên\", " +
+                    "\"entityType\": \"BẮT BUỘC ghi 'Food' nếu lấy từ danh sách MÓN ĂN, hoặc 'Location' nếu lấy từ danh sách ĐỊA ĐIỂM\"}";
                     
-            String prompt = String.format("Tôi cần 1 lịch trình đi chơi tối nay.\n- Số người: %d\n- Thời gian: %s đến %s\n- Ngân sách tổng: %s\n- Ý thích: %s\n\nHãy tạo 1 lịch trình hợp lý bằng các địa điểm trong hệ thống.", 
+            String prompt = String.format("Tôi cần 1 lịch trình đi chơi tối nay.\n- Số người: %d\n- Thời gian: %s đến %s\n- Ngân sách tổng: %s\n- Ý thích: %s\n\nHãy tạo 1 lịch trình hợp lý BẮT BUỘC DÙNG CÁC ĐỊA ĐIỂM VÀ MÓN ĂN TRONG HỆ THỐNG BÊN DƯỚI.", 
                     peopleCount, startTime, endTime, budgetStr, userThinking);
 
             com.example.angi_didau.data.remote.GeminiService.generateItinerary(systemInstruction, prompt, new com.example.angi_didau.data.remote.GeminiService.GeminiCallback() {
@@ -347,23 +353,26 @@ public class DiscoverActivity extends AppCompatActivity {
                     TextView tvAiResultTotalCost = findViewById(R.id.tvAiResultTotalCost);
                     
                     if (tvAiResultTitle != null) {
-                        tvAiResultTitle.setText(String.format("Chuyến đi %d người, từ %s đến %s", peopleCount, startTime, endTime));
+                        String titleText = String.format("Chuyến đi %d người, từ %s đến %s", peopleCount, startTime, endTime);
+                        if (userThinking != null && !userThinking.trim().isEmpty()) {
+                            titleText += " - " + userThinking;
+                        }
+                        tvAiResultTitle.setText(titleText);
                     }
                     if (tvAiResultTotalCost != null) {
                         tvAiResultTotalCost.setText(budgetStr);
                     }
                     
-                    parseAndDisplayTimeline(jsonResult);
+                    parseAndDisplayTimeline(jsonResult, foodsResult, locsResult);
                 }
 
                 @Override
                 public void onError(String errorMessage) {
                     flLoading.setVisibility(View.GONE);
-                    android.widget.Toast.makeText(DiscoverActivity.this, "Lỗi tạo lịch trình: " + errorMessage, android.widget.Toast.LENGTH_LONG).show();
-                    // Fallback to fake data if API fails or KEY is missing
-                    llForm.setVisibility(View.GONE);
-                    llResult.setVisibility(View.VISIBLE);
-                    setupFakeTimelineData();
+                    android.widget.Toast.makeText(DiscoverActivity.this, "Lỗi tạo lịch trình: " + errorMessage + ". Vui lòng thử lại.", android.widget.Toast.LENGTH_LONG).show();
+                    // Just show form again, no fake data
+                    llForm.setVisibility(View.VISIBLE);
+                    llResult.setVisibility(View.GONE);
                 }
             });
         }).addOnFailureListener(e -> {
@@ -372,7 +381,7 @@ public class DiscoverActivity extends AppCompatActivity {
         });
     }
 
-    private void parseAndDisplayTimeline(String json) {
+    private void parseAndDisplayTimeline(String json, com.google.firebase.firestore.QuerySnapshot foodsResult, com.google.firebase.firestore.QuerySnapshot locsResult) {
         RecyclerView rvTimeline = findViewById(R.id.rvTimeline);
         if (rvTimeline == null) return;
         
@@ -385,14 +394,31 @@ public class DiscoverActivity extends AppCompatActivity {
                 String title = obj.optString("title", "Địa điểm");
                 String price = obj.optString("price", "Tùy chọn");
                 String description = obj.optString("description", "");
-                String location = obj.optString("location", "Sài Gòn");
+                String location = obj.optString("location", "Việt Nam");
                 String type = obj.optString("type", "Food");
                 String entityId = obj.optString("entityId", "");
                 String entityType = obj.optString("entityType", type);
                 
+                String imageUrl = "";
+                if (entityType.equalsIgnoreCase("Food") && foodsResult != null) {
+                    for (com.google.firebase.firestore.DocumentSnapshot doc : foodsResult.getDocuments()) {
+                        if (doc.getId().equals(entityId)) {
+                            imageUrl = doc.getString("imageUrl");
+                            break;
+                        }
+                    }
+                } else if (locsResult != null) {
+                    for (com.google.firebase.firestore.DocumentSnapshot doc : locsResult.getDocuments()) {
+                        if (doc.getId().equals(entityId)) {
+                            imageUrl = doc.getString("imageUrl");
+                            break;
+                        }
+                    }
+                }
+                
                 int iconRes = type.equalsIgnoreCase("Food") ? R.drawable.ic_restaurant_menu : R.drawable.ic_location_on;
                 
-                items.add(new TimelineItem(timeCategory, title, price, description, location, R.drawable.ic_discover, iconRes, entityId, entityType));
+                items.add(new TimelineItem(timeCategory, title, price, description, location, imageUrl != null ? imageUrl : "", iconRes, entityId, entityType));
             }
         } catch (Exception e) {
             android.util.Log.e("DiscoverActivity", "JSON Parsing error", e);
@@ -405,40 +431,52 @@ public class DiscoverActivity extends AppCompatActivity {
         rvTimeline.setAdapter(adapter);
     }
 
+
     private void setupFakeTimelineData() {
         RecyclerView rvTimeline = findViewById(R.id.rvTimeline);
         if (rvTimeline == null) return;
         
         List<TimelineItem> fakeData = new ArrayList<>();
         fakeData.add(new TimelineItem(
-                "18:00 — CAFE",
+                "08:00 — CÀ PHÊ SÁNG",
                 "The Workshop Coffee",
                 "60.000đ",
-                "Không gian yên tĩnh, view ban công cực chill cho cặp đôi.",
+                "Không gian yên tĩnh, view ban công cực chill, thích hợp để bắt đầu ngày mới.",
                 "Quận 1, TP. HCM",
-                R.drawable.ic_discover, 
+                "https://picsum.photos/seed/cafe1/600/300",
                 R.drawable.ic_location_on,
                 "", ""
         ));
         
         fakeData.add(new TimelineItem(
-                "19:30 — DINNER",
+                "10:00 — KHÁM PHÁ",
+                "Nhà thờ Đức Bà",
+                "Miễn phí",
+                "Điểm check-in nổi tiếng giữa lòng thành phố, kiến trúc Pháp đẹp mắt.",
+                "Quận 1, TP. HCM",
+                "https://picsum.photos/seed/church1/600/300",
+                R.drawable.ic_location_on,
+                "", ""
+        ));
+        
+        fakeData.add(new TimelineItem(
+                "12:00 — TRƯA",
                 "Bánh Mì Huỳnh Hoa",
                 "80.000đ",
-                "Combo ổ đặc biệt cho 2 người, ăn kèm trà đá lề đường vui vẻ.",
+                "Bánh mì ngon nhất Sài Gòn, combo đặc biệt cho 2 người siêu ngon.",
                 "Cách Mạng Tháng 8",
-                R.drawable.ic_discover,
+                "https://picsum.photos/seed/banhmi1/600/300",
                 R.drawable.ic_restaurant_menu,
                 "", ""
         ));
         
         fakeData.add(new TimelineItem(
-                "21:00 — RELAX",
+                "14:30 — CHIỀU",
                 "Bến Bạch Đằng Waterbus Walk",
                 "60.000đ",
-                "Dạo phố đêm và thưởng thức 2 ly trà dâu ngắm tàu chạy.",
+                "Đi tàu thủy ngắm sông Sài Gòn, gió mát và phong cảnh tuyệt vời.",
                 "Bến Bạch Đằng",
-                R.drawable.ic_discover,
+                "https://picsum.photos/seed/waterfront1/600/300",
                 R.drawable.ic_location_on,
                 "", ""
         ));
@@ -446,6 +484,7 @@ public class DiscoverActivity extends AppCompatActivity {
         TimelineAdapter adapter = new TimelineAdapter(fakeData);
         rvTimeline.setAdapter(adapter);
     }
+
 
     private void setupBottomNav() {
         // Highlight Discover Tab

@@ -86,8 +86,16 @@ public class RecommendedLocationAdapter
             tvLocationName.setText(location.getName());
             tvLocationAddress.setText(location.getAddress());
             tvLocationRating.setText(String.valueOf(location.getAverageRating()));
-            // Since we don't have real price/distance data from Firestore/GPS yet, hide these elements
-            tvLocationPrice.setVisibility(android.view.View.GONE);
+            // Show price based on location.getPrice()
+            if (location.getPrice() > 0) {
+                java.text.NumberFormat format = java.text.NumberFormat.getCurrencyInstance(new java.util.Locale("vi", "VN"));
+                tvLocationPrice.setText(format.format(location.getPrice()));
+            } else {
+                tvLocationPrice.setText("Miễn phí");
+            }
+            tvLocationPrice.setVisibility(android.view.View.VISIBLE);
+            
+            // Distance is still hidden as we don't have GPS data yet
             tvLocationDistance.setVisibility(android.view.View.GONE);
 
             Glide.with(itemView.getContext())
