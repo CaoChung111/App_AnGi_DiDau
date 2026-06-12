@@ -104,6 +104,7 @@ public class FoodDetailActivity extends AppCompatActivity {
         View btnAddReview = findViewById(R.id.btnAddReview);
         if (btnAddReview != null) {
             btnAddReview.setOnClickListener(v -> {
+                if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
                 String foodId = getIntent().getStringExtra(AppConstants.EXTRA_FOOD_ID);
                 if (foodId != null) {
                     com.example.angi_didau.ui.location.fragment.AddReviewBottomSheet bottomSheet = 
@@ -176,6 +177,7 @@ public class FoodDetailActivity extends AppCompatActivity {
             View btnFavorite = findViewById(R.id.btnFavorite);
             if (btnFavorite != null) {
                 btnFavorite.setOnClickListener(v -> {
+                    if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
                     viewModel.toggleFavorite(food);
                 });
             }

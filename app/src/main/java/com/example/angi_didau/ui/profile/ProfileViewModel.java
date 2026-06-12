@@ -126,4 +126,31 @@ public class ProfileViewModel extends ViewModel {
         authRepository.logout();
         logoutResult.setValue(true);
     }
+
+    /**
+     * Deletes the user account from Firebase Auth and Firestore.
+     */
+    public void deleteAccount(java.lang.Runnable onSuccess, java.lang.Runnable onError) {
+        com.google.firebase.auth.FirebaseUser fbUser = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
+        if (fbUser != null) {
+            String uid = fbUser.getUid();
+            com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(uid)
+                .delete()
+                .addOnCompleteListener(task -> {
+                    fbUser.delete().addOnCompleteListener(authTask -> {
+                        if (authTask.isSuccessful()) {
+                            authRepository.logout();
+                            logoutResult.postValue(true);
+                            if (onSuccess != null) onSuccess.run();
+                        } else {
+                            if (onError != null) onError.run();
+                        }
+                    });
+                });
+        } else {
+            if (onError != null) onError.run();
+        }
+    }
 }

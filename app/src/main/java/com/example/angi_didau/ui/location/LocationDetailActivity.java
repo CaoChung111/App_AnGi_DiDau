@@ -143,7 +143,20 @@ public class LocationDetailActivity extends AppCompatActivity {
             ImageView btnFavorite = findViewById(R.id.btnFavorite);
             if (btnFavorite != null) {
                 btnFavorite.setOnClickListener(v -> {
+                    if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
                     viewModel.toggleFavorite(location);
+                });
+            }
+
+            ImageView btnShare = findViewById(R.id.btnShare);
+            if (btnShare != null) {
+                btnShare.setOnClickListener(v -> {
+                    android.content.Intent shareIntent = new android.content.Intent(android.content.Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Chia sẻ địa điểm");
+                    String shareMessage = "Bạn ơi, xem địa điểm này nè: " + location.getName() + "\nĐịa chỉ: " + location.getAddress() + "\nĐánh giá: " + location.getAverageRating() + " sao!";
+                    shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareMessage);
+                    startActivity(android.content.Intent.createChooser(shareIntent, "Chia sẻ địa điểm qua"));
                 });
             }
 
@@ -252,6 +265,7 @@ public class LocationDetailActivity extends AppCompatActivity {
     }
 
     private void onAddReviewClicked(String locationId) {
+        if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
         AddReviewBottomSheet bottomSheet = AddReviewBottomSheet.newInstance(locationId, currentLocationName);
         bottomSheet.show(getSupportFragmentManager(), "AddReviewBottomSheet");
     }

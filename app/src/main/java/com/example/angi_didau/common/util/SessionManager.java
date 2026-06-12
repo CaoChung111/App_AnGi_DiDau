@@ -32,12 +32,23 @@ public class SessionManager {
                 .putBoolean(AppConstants.KEY_IS_LOGGED_IN, isLoggedIn)
                 .putString(AppConstants.KEY_USER_ID, userId)
                 .putString(AppConstants.KEY_USER_NAME, userName)
+                .putBoolean("is_guest", false)
                 .apply();
     }
 
     /** Clears all session data on logout. */
     public void clearSession() {
         sharedPreferences.edit().clear().apply();
+    }
+
+    public void setGuestMode(boolean isGuest) {
+        sharedPreferences.edit()
+                .putBoolean("is_guest", isGuest)
+                .apply();
+    }
+
+    public boolean isGuestMode() {
+        return sharedPreferences.getBoolean("is_guest", false);
     }
 
     public boolean isLoggedIn() {

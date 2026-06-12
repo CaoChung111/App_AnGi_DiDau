@@ -38,10 +38,27 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         viewModel      = new ViewModelProvider(this).get(ProfileViewModel.class);
-        sessionManager = new SessionManager(this);
+        this.sessionManager = new com.example.angi_didau.common.util.SessionManager(this);
+        if (sessionManager.isGuestMode()) {
+            findViewById(R.id.llAuthenticatedContent).setVisibility(android.view.View.GONE);
+            findViewById(R.id.llGuestContent).setVisibility(android.view.View.VISIBLE);
+            findViewById(R.id.btnGuestLogin).setOnClickListener(v -> {
+                sessionManager.clearSession();
+                android.content.Intent intent = new android.content.Intent(this, com.example.angi_didau.ui.auth.LoginActivity.class);
+                intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP | android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            });
+            setupBottomNav();
+            return; // Skip observing ViewModel and setting up authenticated features
+        } else {
+            findViewById(R.id.llAuthenticatedContent).setVisibility(android.view.View.VISIBLE);
+            findViewById(R.id.llGuestContent).setVisibility(android.view.View.GONE);
+        }
 
         setupBottomNav();
         setupLogout();
+        setupDeleteAccount();
         setupMenuOptions();
         observeViewModel();
     }
@@ -114,6 +131,13 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    private void setupDeleteAccount() {
+        View llDeleteAccount = findViewById(R.id.llDeleteAccount);
+        if (llDeleteAccount != null) {
+            llDeleteAccount.setOnClickListener(v -> confirmDeleteAccount());
+        }
+    }
+
     private void setupMenuOptions() {
         View llFavorites = findViewById(R.id.llFavorites);
         if (llFavorites != null) {
@@ -150,6 +174,21 @@ public class ProfileActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void confirmDeleteAccount() {
+        new AlertDialog.Builder(this)
+                .setTitle("Xóa tài khoản")
+                .setMessage("Hành động này sẽ xóa vĩnh viễn tài khoản và toàn bộ dữ liệu của bạn trên hệ thống. Bạn có chắc chắn muốn tiếp tục?")
+                .setPositiveButton("Xóa vĩnh viễn", (dialog, which) -> {
+                    Toast.makeText(this, "Đang xử lý...", Toast.LENGTH_SHORT).show();
+                    viewModel.deleteAccount(
+                        () -> Toast.makeText(this, "Đã xóa tài khoản thành công.", Toast.LENGTH_SHORT).show(),
+                        () -> Toast.makeText(this, "Có lỗi xảy ra, vui lòng thử lại.", Toast.LENGTH_SHORT).show()
+                    );
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
     private void setupBottomNav() {
         // Highlight Profile Tab
         ((TextView) findViewById(R.id.tvNavProfile)).setTextColor(getResources().getColor(R.color.primary_container));
@@ -167,12 +206,15 @@ public class ProfileActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
         findViewById(R.id.navDiscover).setOnClickListener(v -> {
-            startActivity(new Intent(this, DiscoverActivity.class));
+            if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
+            startActivity(new Intent(this, com.example.angi_didau.ui.discover.DiscoverActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });
+
         findViewById(R.id.navFavorites).setOnClickListener(v -> {
-            startActivity(new Intent(this, FavoritesActivity.class));
+            if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
+            startActivity(new Intent(this, com.example.angi_didau.ui.favorites.FavoritesActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });

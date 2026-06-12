@@ -119,13 +119,15 @@ public class RandomActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.navDiscover).setOnClickListener(v -> {
-            startActivity(new Intent(this, DiscoverActivity.class));
+            if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
+            startActivity(new Intent(this, com.example.angi_didau.ui.discover.DiscoverActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });
         
         findViewById(R.id.navFavorites).setOnClickListener(v -> {
-            startActivity(new Intent(this, FavoritesActivity.class));
+            if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
+            startActivity(new Intent(this, com.example.angi_didau.ui.favorites.FavoritesActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });

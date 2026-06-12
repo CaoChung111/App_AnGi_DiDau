@@ -302,6 +302,7 @@ public class DiscoverActivity extends AppCompatActivity {
         
         // Fetch data from Firestore before calling AI
         // Lấy tất cả dữ liệu theo yêu cầu của user, nhưng bỏ gửi Image URL cho AI để tối ưu hóa
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Task<QuerySnapshot> foodsTask = db.collection(AppConstants.COLLECTION_FOODS).get();
         Task<QuerySnapshot> locationsTask = db.collection(AppConstants.COLLECTION_LOCATIONS).get();
 
@@ -512,7 +513,8 @@ public class DiscoverActivity extends AppCompatActivity {
         });
         
         findViewById(R.id.navFavorites).setOnClickListener(v -> {
-            startActivity(new Intent(this, FavoritesActivity.class));
+            if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
+            startActivity(new Intent(this, com.example.angi_didau.ui.favorites.FavoritesActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });

@@ -41,8 +41,8 @@ public class LoginActivity extends AppCompatActivity {
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         sessionManager = new SessionManager(this);
 
-        // Skip login if already authenticated
-        if (authViewModel.isUserLoggedIn()) {
+        // Skip login if already authenticated or in guest mode
+        if (authViewModel.isUserLoggedIn() || sessionManager.isGuestMode()) {
             navigateToHome();
             return;
         }
@@ -61,6 +61,14 @@ public class LoginActivity extends AppCompatActivity {
 
         findViewById(R.id.tvGoToRegister).setOnClickListener(v ->
                 startActivity(new Intent(this, RegisterActivity.class)));
+
+        android.view.View tvSkipLogin = findViewById(R.id.tvSkipLogin);
+        if (tvSkipLogin != null) {
+            tvSkipLogin.setOnClickListener(v -> {
+                sessionManager.setGuestMode(true);
+                navigateToHome();
+            });
+        }
     }
 
     private void setupListeners() {

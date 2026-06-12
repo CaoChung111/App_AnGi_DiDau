@@ -59,7 +59,7 @@ public class HomeActivity extends AppCompatActivity {
         // Handles cases where Firebase token has expired or user was deleted.
         com.google.firebase.auth.FirebaseUser firebaseUser =
                 com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser == null) {
+        if (firebaseUser == null && !sessionManager.isGuestMode()) {
             navigateToLogin();
             return;
         }
@@ -67,8 +67,10 @@ public class HomeActivity extends AppCompatActivity {
         TextView tvUserName = findViewById(R.id.tvUserName);
         if (tvUserName != null) {
             String userName = sessionManager.getUserName();
-            if (userName == null || userName.isEmpty()) {
-                userName = firebaseUser.getEmail() != null ? firebaseUser.getEmail().split("@")[0] : "Người dùng";
+            if (sessionManager.isGuestMode()) {
+                userName = "Khách";
+            } else if (userName == null || userName.isEmpty()) {
+                userName = firebaseUser != null && firebaseUser.getEmail() != null ? firebaseUser.getEmail().split("@")[0] : "Người dùng";
             }
             tvUserName.setText(userName + " 👋");
         }
@@ -160,12 +162,14 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.navDiscover).setOnClickListener(v -> {
+            if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
             startActivity(new Intent(this, DiscoverActivity.class));
             finish();
             overridePendingTransition(0, 0);
         });
 
         findViewById(R.id.navFavorites).setOnClickListener(v -> {
+            if (com.example.angi_didau.common.util.SessionHelper.checkGuestAndRequireLogin(this)) return;
             startActivity(new Intent(this, FavoritesActivity.class));
             finish();
             overridePendingTransition(0, 0);
