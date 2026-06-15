@@ -93,12 +93,13 @@ public class GeminiService {
                     os.write(input, 0, input.length);
                 }
 
-                int statusCode = conn.getResponseCode();
+
                 // Retry on 503 (Service Unavailable) up to 3 attempts
                 int attempts = 0;
                 while (true) {
                     attempts++;
                     int statusCode = conn.getResponseCode();
+
                     if (statusCode == 200) {
                         // success handling (existing code)
                         BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8), 8192);

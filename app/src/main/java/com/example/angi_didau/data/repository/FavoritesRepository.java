@@ -8,9 +8,9 @@ import com.example.angi_didau.data.remote.FirestoreDataSource;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import com.example.angi_didau.data.model.Favorite;
 
 /**
  * Repository for managing user favorites stored in Firestore.
@@ -42,10 +42,10 @@ public class FavoritesRepository {
      * Fetches all favorite item IDs and their types for a given user.
      *
      * @param userId Firebase Auth UID of the current user
-     * @return LiveData emitting a list of favorite maps (each map has "entityId", "type", "name", "note")
+     * @return LiveData emitting a list of favorites
      */
-    public LiveData<List<Map<String, Object>>> getFavorites(String userId) {
-        MutableLiveData<List<Map<String, Object>>> liveData = new MutableLiveData<>();
+    public LiveData<List<Favorite>> getFavorites(String userId) {
+        MutableLiveData<List<Favorite>> liveData = new MutableLiveData<>();
 
         if (userId == null || userId.isEmpty()) {
             liveData.setValue(new ArrayList<>());
@@ -62,11 +62,11 @@ public class FavoritesRepository {
                         return;
                     }
                     if (querySnapshot != null) {
-                        List<Map<String, Object>> items = new ArrayList<>();
+                        List<Favorite> items = new ArrayList<>();
                         for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                            Map<String, Object> item = doc.getData();
+                            Favorite item = doc.toObject(Favorite.class);
                             if (item != null) {
-                                item.put("docId", doc.getId());
+                                item.setEntityId(doc.getId()); // ensure ID is set
                                 items.add(item);
                             }
                         }
@@ -92,14 +92,15 @@ public class FavoritesRepository {
     public LiveData<Boolean> addFavorite(String userId, String entityId, String type, String name, String imageUrl, String note, boolean isCustom) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
 
-        Map<String, Object> favoriteData = new HashMap<>();
-        favoriteData.put("entityId",   entityId);
-        favoriteData.put("type",       type);
-        favoriteData.put("name",       name);
-        favoriteData.put("imageUrl",   imageUrl != null ? imageUrl : "");
-        favoriteData.put("note",       note != null ? note : "");
-        favoriteData.put("savedAt",    System.currentTimeMillis());
-        favoriteData.put("isCustom",   isCustom);
+        Favorite favoriteData = new Favorite(
+                entityId,
+                type,
+                name,
+                imageUrl != null ? imageUrl : "",
+                note != null ? note : "",
+                System.currentTimeMillis(),
+                isCustom
+        );
 
         db.collection(AppConstants.COLLECTION_FAVORITES)
                 .document(userId)
@@ -176,14 +177,11 @@ public class FavoritesRepository {
     public LiveData<Boolean> updateFavoriteNote(String userId, String entityId, String newNote) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
 
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("note", newNote);
-
         db.collection(AppConstants.COLLECTION_FAVORITES)
                 .document(userId)
                 .collection(SUB_COLLECTION_ITEMS)
                 .document(entityId)
-                .update(updates)
+                .update("note", newNote)
                 .addOnSuccessListener(aVoid -> result.setValue(true))
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Failed to update note for: " + entityId, e);

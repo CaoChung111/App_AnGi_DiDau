@@ -15,23 +15,24 @@ import com.example.angi_didau.common.constant.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import com.example.angi_didau.data.model.Favorite;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder> {
 
-    private final List<Map<String, Object>> favoriteList = new ArrayList<>();
+    private final List<Favorite> favoriteList = new ArrayList<>();
     private final OnFavoriteClickListener listener;
 
     public interface OnFavoriteClickListener {
-        void onFavoriteClick(Map<String, Object> favorite);
-        void onRemoveClick(Map<String, Object> favorite);
+        void onFavoriteClick(Favorite favorite);
+        void onRemoveClick(Favorite favorite);
     }
 
     public FavoriteAdapter(OnFavoriteClickListener listener) {
         this.listener = listener;
     }
 
-    public void submitList(List<Map<String, Object>> list) {
+    public void submitList(List<Favorite> list) {
         favoriteList.clear();
         if (list != null) {
             favoriteList.addAll(list);
@@ -49,7 +50,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
-        Map<String, Object> favorite = favoriteList.get(position);
+        Favorite favorite = favoriteList.get(position);
         holder.bind(favorite);
     }
 
@@ -92,12 +93,12 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
             }
         }
 
-        public void bind(Map<String, Object> favorite) {
-            String name = (String) favorite.get("name");
-            String note = (String) favorite.get("note");
-            String type = (String) favorite.get("type");
-            String imageUrl = (String) favorite.get("imageUrl");
-            Boolean isCustom = (Boolean) favorite.get("isCustom");
+        public void bind(Favorite favorite) {
+            String name = favorite.getName();
+            String note = favorite.getNote();
+            String type = favorite.getType();
+            String imageUrl = favorite.getImageUrl();
+            boolean isCustom = favorite.isCustom();
 
             tvName.setText(name != null ? name : "Chưa có tên");
             
@@ -108,7 +109,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Favori
                 tvNote.setVisibility(View.GONE);
             }
 
-            if (Boolean.TRUE.equals(isCustom)) {
+            if (isCustom) {
                 if (tvCustomTag != null) tvCustomTag.setVisibility(View.VISIBLE);
             } else {
                 if (tvCustomTag != null) tvCustomTag.setVisibility(View.GONE);

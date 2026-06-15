@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.angi_didau.R;
 import com.example.angi_didau.adapter.FavoriteAdapter;
+import com.example.angi_didau.data.model.Favorite;
 import com.example.angi_didau.ui.discover.DiscoverActivity;
 import com.example.angi_didau.ui.home.HomeActivity;
 import com.example.angi_didau.ui.profile.ProfileActivity;
@@ -54,15 +55,15 @@ public class FavoritesActivity extends AppCompatActivity {
         RecyclerView rvFavorites = findViewById(R.id.rvFavorites);
         adapter = new FavoriteAdapter(new FavoriteAdapter.OnFavoriteClickListener() {
             @Override
-            public void onFavoriteClick(java.util.Map<String, Object> favorite) {
-                Boolean isCustom = (Boolean) favorite.get("isCustom");
-                if (Boolean.TRUE.equals(isCustom)) {
+            public void onFavoriteClick(Favorite favorite) {
+                boolean isCustom = favorite.isCustom();
+                if (isCustom) {
                     Toast.makeText(FavoritesActivity.this, "Đây là ghi chú cá nhân", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                String type = (String) favorite.get("type");
-                String id = (String) favorite.get("entityId");
+                String type = favorite.getType();
+                String id = favorite.getEntityId();
                 if (com.example.angi_didau.common.constant.AppConstants.ENTITY_TYPE_FOOD.equals(type)) {
                     Intent intent = new Intent(FavoritesActivity.this, com.example.angi_didau.ui.food.FoodDetailActivity.class);
                     intent.putExtra(com.example.angi_didau.common.constant.AppConstants.EXTRA_FOOD_ID, id);
@@ -75,10 +76,10 @@ public class FavoritesActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onRemoveClick(java.util.Map<String, Object> favorite) {
-                String id = (String) favorite.get("entityId");
+            public void onRemoveClick(Favorite favorite) {
+                String id = favorite.getEntityId();
                 if (id != null) {
-                    String imageUrl = (String) favorite.get("imageUrl");
+                    String imageUrl = favorite.getImageUrl();
                     if (imageUrl != null && !imageUrl.startsWith("http") && !imageUrl.isEmpty()) {
                         try {
                             java.io.File file = new java.io.File(imageUrl);

@@ -8,7 +8,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import com.example.angi_didau.data.model.Favorite;
 
 /**
  * ViewModel for {@link FavoritesActivity}.
@@ -20,7 +21,7 @@ public class FavoritesViewModel extends ViewModel {
 
     private final FavoritesRepository favoritesRepository;
 
-    private LiveData<List<Map<String, Object>>> favorites;
+    private LiveData<List<Favorite>> favorites;
     private final MutableLiveData<Boolean>      saveNoteResult = new MutableLiveData<>();
     private final MutableLiveData<Boolean>      removeResult   = new MutableLiveData<>();
     private final MutableLiveData<Boolean>      isLoading      = new MutableLiveData<>(true);
@@ -41,13 +42,13 @@ public class FavoritesViewModel extends ViewModel {
      * Returns the list of favorites for the current user.
      * Returns an empty list LiveData if not logged in.
      */
-    public LiveData<List<Map<String, Object>>> getFavorites() {
+    public LiveData<List<Favorite>> getFavorites() {
         if (favorites == null) {
             String userId = getCurrentUserId();
             if (userId != null) {
                 favorites = favoritesRepository.getFavorites(userId);
             } else {
-                MutableLiveData<List<Map<String, Object>>> emptyData = new MutableLiveData<>();
+                MutableLiveData<List<Favorite>> emptyData = new MutableLiveData<>();
                 emptyData.setValue(new ArrayList<>());
                 favorites = emptyData;
             }

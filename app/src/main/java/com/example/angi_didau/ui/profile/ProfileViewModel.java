@@ -78,7 +78,7 @@ public class ProfileViewModel extends ViewModel {
         com.google.firebase.auth.FirebaseUser fbUser = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
         if (fbUser != null) {
             favoritesRepository.getFavorites(fbUser.getUid()).observeForever(favorites -> {
-                long count = favorites.stream().filter(f -> "location".equals(f.get("type"))).count();
+                long count = favorites.stream().filter(f -> "location".equals(f.getType())).count();
                 countData.setValue((int) count);
             });
         }
@@ -90,7 +90,7 @@ public class ProfileViewModel extends ViewModel {
         com.google.firebase.auth.FirebaseUser fbUser = com.google.firebase.auth.FirebaseAuth.getInstance().getCurrentUser();
         if (fbUser != null) {
             favoritesRepository.getFavorites(fbUser.getUid()).observeForever(favorites -> {
-                long count = favorites.stream().filter(f -> "food".equals(f.get("type"))).count();
+                long count = favorites.stream().filter(f -> "food".equals(f.getType())).count();
                 countData.setValue((int) count);
             });
         }
